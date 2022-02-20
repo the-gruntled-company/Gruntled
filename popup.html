@@ -12,18 +12,28 @@
             </div>
             <button id="close" class=closeButton><i class="fas fa-times"></i></button>
         </div>
+
         <div class="tabs">
-            <button class="tab-0-3-19 body2 tabActive-0-3-20" role="tab" aria-selected="true" id="homeButton">
-                Home
-            </button>
-            <button class="tab-0-3-19 body2" role="tab" aria-selected="false" id="dataButton">
-                Past Recordings
-            </button>
-        </div>
+            <div class="sidebar">
+               <!-- tabs buttons  -->
+               <button class="tab-btn tab-btn-active" data-for-tab="1">1</button>
+               <button class="tab-btn" data-for-tab="2">2</button>
+             </div>
+               <!-- tabs content  -->
+               <div class="content">
+                   <div class="tab-content tab-content-active" data-tab="1">
+                       <H1>Tab 1</H1>
+                    </div>
+                     <div class="tab-content" data-tab="2">
+                       <H1>Tab 2</H1>
+                     </div>
+                </div>
+                <script src="popup.js"></script>
+          </div>
+
         <div class="buttonContainer">
             <button id="savedRecording" class="btn">Gruntled</button>
             <button id="startRecording" class="btn"><i class="fas fa-video"></i></button>
-            <script src="popup.js"></script>
         </div>
     </body>
 </html>
