@@ -1,12 +1,12 @@
 'use strict';
 
-window.onload = function () {
-	chrome.runtime.getBackgroundPage(function (backgroundPage) {
+start.addEventListener('click', function(){
+  chrome.runtime.getBackgroundPage(function (backgroundPage) {
 	  // close popup window
 		backgroundPage.startRecord();
 		window.close();
-	});
-};
+	})
+});
 
 function setupTabs (){
     document.querySelectorAll('.tab-btn').forEach(button=>{
