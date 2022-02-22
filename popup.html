@@ -16,13 +16,19 @@
         <div class="tabs">
             <div class="sidebar">
                <!-- tabs buttons  -->
-               <button class="tab-btn tab-btn-active" data-for-tab="1">1</button>
-               <button class="tab-btn" data-for-tab="2">2</button>
+               <button class="tab-btn tab-btn-active" data-for-tab="home">Home</button>
+               <button class="tab-btn" data-for-tab="saves">Saves</button>
              </div>
                <!-- tabs content  -->
                <div class="content">
                    <div class="tab-content tab-content-active" data-tab="1">
-                       <H1>Tab 1</H1>
+                        <!-- <button id="x" class="btn"><i class="fas fa-video"></i></button> -->
+                            <div>
+                                <video autoplay></video>
+                                <p><button class="capture-button">Capture video</button>                                <button id="stop">Stop</button> 
+                            </div>
+                        </div>
+
                     </div>
                      <div class="tab-content" data-tab="2">
                        <H1>Tab 2</H1>
@@ -30,11 +36,6 @@
                 </div>
                 <script src="popup.js"></script>
           </div>
-
-        <div class="buttonContainer">
-            <button id="savedRecording" class="btn">Gruntled</button>
-            <button id="startRecording" class="btn"><i class="fas fa-video"></i></button>
-        </div>
     </body>
 </html>
 
