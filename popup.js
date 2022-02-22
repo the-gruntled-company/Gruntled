@@ -1,3 +1,13 @@
+'use strict';
+
+window.onload = function () {
+	chrome.runtime.getBackgroundPage(function (backgroundPage) {
+	  // close popup window
+		backgroundPage.startRecord();
+		window.close();
+	});
+};
+
 function setupTabs (){
     document.querySelectorAll('.tab-btn').forEach(button=>{
       button.addEventListener('click',()=>{
@@ -17,20 +27,6 @@ function setupTabs (){
         tabActivate.classList.add('tab-content-active')
       })
     })
-}
-
-const captureVideoButton = document.querySelector(
-  "#cssfilters .capture-button"
-);
-const video = document.querySelector("#cssfilters video");
-captureVideoButton.onclick = function () {
-  navigator.mediaDevices
-    .getUserMedia(constraints)
-    .then(handleSuccess)
-    .catch(handleError);
-};
-function handleSuccess(stream) {
-  video.srcObject = stream;
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
