@@ -29,6 +29,11 @@ function setupTabs (){
     })
 }
 
+var closeButton = document.querySelector('.closeButton');
+closeButton.addEventListener('click', function() {
+  window.close();
+});
+
 document.addEventListener('DOMContentLoaded',()=>{
     setupTabs();
 })
