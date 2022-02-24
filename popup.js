@@ -1,16 +1,15 @@
 'use strict';
 
+//On click: Start recording
 start.addEventListener('click', function(){
   chrome.runtime.getBackgroundPage(function (backgroundPage) {
-	  // close popup window
 		backgroundPage.startRecord();
-		window.close();
 	})
 });
 
 function setupTabs (){
     document.querySelectorAll('.tab-btn').forEach(button=>{
-      button.addEventListener('click',()=>{
+      button.addEventListener('click', ()=>{
         
         const sidebar = button.parentElement;
         const tabs = sidebar.parentElement;
@@ -29,11 +28,13 @@ function setupTabs (){
     })
 }
 
+//On click: Close button
 var closeButton = document.querySelector('.closeButton');
 closeButton.addEventListener('click', function() {
   window.close();
 });
 
+//On load
 document.addEventListener('DOMContentLoaded',()=>{
     setupTabs();
 })
