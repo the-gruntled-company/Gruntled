@@ -22,18 +22,23 @@
                <!-- tabs content  -->
                <div class="content">
                    <div class="tab-content tab-content-active" data-tab="1">
-                        <!-- <button id="x" class="btn"><i class="fas fa-video"></i></button> -->
-                        <button id="start">Start camera</button>
+                        <button id="start"><i class="fas fa-video"></i></button>
                         <button id="record" disabled>Start Recording</button>
                         <button id="play" disabled>Play</button>
                         <button id="download" disabled>Download</button>
+
+                        <div id="status"></div>
+                        <video autoplay="true" id="webcamVideo" width="227" height ="227"></video>
                     </div>
+                    
                     <div class="tab-content" data-tab="2">
                         <H1>Tab 2</H1>
                     </div>
                 </div>
-                <script src="popup.js"></script>
         </div>
+        <script src="popup.js"></script>
+        <script src="background.js"></script>
+
     </body>
 </html>
 

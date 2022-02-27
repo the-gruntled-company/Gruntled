@@ -16,7 +16,7 @@
         "default_popup" : "popup.html"
     },
     "permissions": [
-        "storage", "identity", "activeTab", "tabs", "\u003Call_urls>"
+        "storage", "identity", "activeTab", "tabs"
     ],
     "content_security_policy": "script-src 'self' https://kit.fontawesome.com/c22d4a9399.js; object-src 'self'"
 }
