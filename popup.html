@@ -2,40 +2,25 @@
 <html>
     <head>
         <script src="https://kit.fontawesome.com/c22d4a9399.js" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="style.css">
         <title>Gruntled</title>
     </head>
     <body>
         <div class="header">
             <div class="icon">
-                <img src="img/icons16.png" alt="icon" width="16" height="16">
+                <img src="img/icon.png" alt="icon" width="16" height="16">
             </div>
-            <button id="close" class=closeButton><i class="fas fa-times"></i></button>
+            <button id="close"><i class="fas fa-times"></i></button>
         </div>
 
-        <div class="tabs">
-            <div class="sidebar">
-                <!-- tabs buttons  -->
-                <button class="tab-btn tab-btn-active" data-for-tab="home">Home</button>
-                <button class="tab-btn" data-for-tab="saves">Saves</button>
-            </div>
-               <!-- tabs content  -->
-               <div class="content">
-                   <div class="tab-content tab-content-active" data-tab="1">
-                        <button id="start"><i class="fas fa-video"></i></button>
-                        <button id="record" disabled>Start Recording</button>
-                        <button id="play" disabled>Play</button>
-                        <button id="download" disabled>Download</button>
+        <button id="start"><i class="fas fa-video"></i></button>
+        <button id="record" disabled>Start Recording</button>
+        <button id="play" disabled>Play</button>
+        <button id="download" disabled>Download</button>
 
-                        <div id="status"></div>
-                        <video autoplay="true" id="webcamVideo" width="227" height ="227"></video>
-                    </div>
+        <div id="status"></div>
+        <video autoplay="true" id="webcam" width="227" height ="227"></video>
                     
-                    <div class="tab-content" data-tab="2">
-                        <H1>Tab 2</H1>
-                    </div>
-                </div>
-        </div>
         <script src="popup.js"></script>
         <script src="background.js"></script>
 
