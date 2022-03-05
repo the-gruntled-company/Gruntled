@@ -16,3 +16,9 @@ startButton.addEventListener('click', function(){
 	})
 });
 
+//id=link: youtube link
+chrome.tabs.query({active: true, currentWindow : true}, tabs => {
+  let url = tabs[0].url;
+  document.querySelector('#link').innerHTML = "Link URL: " + url;
+  // use `url` here inside the callback because it's asynchronous!
+});
