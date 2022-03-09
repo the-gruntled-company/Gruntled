@@ -12,15 +12,23 @@
             </div>
             <button id="close"><i class="fas fa-times"></i></button>
         </div>
-
-        <button id="start"><i class="fas fa-video"></i></button>
-        <button id="record" disabled>Start Recording</button>
-        <button id="play" disabled>Play</button>
-        <button id="download" disabled>Download</button>
+    
+        <div>
+            <button id="start">Start camera</button>
+            <button id="record" disabled>Start Recording</button>
+            <button id="play" disabled>Play</button>
+            <button id="download" disabled>Download</button>
+        </div>
+    
+        <div>
+            Recording format: <select id="codecPreferences" disabled></select>
+        </div>
 
         <div id="status"></div>
-        <video autoplay="true" id="webcam" width="227" height ="227"></video>
-        <div id="link"></div>
+
+        <div id="title">YOUTUBE VIDEO TITLE</div>
+        <video id="gum" width="300" height ="225" playsinline autoplay muted></video>
+        <video id="recorded" width="300" height ="225" playsinline loop></video>
                     
         <script src="popup.js"></script>
         <script src="background.js"></script>

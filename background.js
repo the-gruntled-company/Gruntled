@@ -20,18 +20,42 @@ chrome.runtime.onInstalled.addListener(function() {
 
 function setupWebcam() {
     navigator.mediaDevices.getUserMedia({
-        video: true
+        video: true,
+        audio: true
     }).then(stream => {
         chrome.storage.local.set({
             'camAccess': true
         }, () => {});
-        document.querySelector('#webcam').srcObject = stream;
-        document.querySelector('#start').disabled = true;
-        document.querySelector('#record').disabled = false;
+        document.querySelector('button#start').disabled = true;
+        document.querySelector('button#record').disabled = false;
+        window.stream = stream;
+  
+        const gumVideo = document.querySelector('video#gum');
+        gumVideo.srcObject = stream;
+      
+        getSupportedMimeTypes().forEach(mimeType => {
+          const option = document.createElement('option');
+          option.value = mimeType;
+          option.innerText = option.value;
+          codecPreferences.appendChild(option);
+        });
+        codecPreferences.disabled = false;
     })
-    .catch((error) => {
-        document.querySelector('#status').innerHTML = error.toString();
-        console.warn(error);
+    .catch((e) => {
+        document.querySelector('#status').innerHTML = e.toString();
+        console.error(e);
+    });
+}
+
+function getSupportedMimeTypes() {
+    const possibleTypes = [
+      'video/webm;codecs=vp9,opus',
+      'video/webm;codecs=vp8,opus',
+      'video/webm;codecs=h264,opus',
+      'video/mp4;codecs=h264,aac',
+    ];
+    return possibleTypes.filter(mimeType => {
+      return MediaRecorder.isTypeSupported(mimeType);
     });
 }
 
