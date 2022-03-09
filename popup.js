@@ -16,6 +16,12 @@ startButton.addEventListener('click', function(){
 	})
 });
 
+//id=title: get youtube title
+chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+  let title = tabs[0].title;   //title
+  document.querySelector('#title').innerHTML = title;
+});
+
 'use strict';
 
 /* globals MediaRecorder */
