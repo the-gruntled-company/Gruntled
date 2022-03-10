@@ -4,6 +4,28 @@ closeButton.addEventListener('click', function() {
   window.close();
 });
 
+//setup tabs
+function setupTabs (){
+  document.querySelectorAll('.tab-btn').forEach(button=>{
+    button.addEventListener('click',()=>{
+      
+      const sidebar = button.parentElement;
+      const tabs = sidebar.parentElement;
+      const tabNumber = button.dataset.forTab;
+      const tabActivate = tabs.querySelector(`.tab-content[data-tab="${tabNumber}"]`)
+      
+      sidebar.querySelectorAll('.tab-btn').forEach(button=>{
+        button.classList.remove('tab-btn-active')
+      })
+       tabs.querySelectorAll('.tab-content').forEach(tab=>{
+        tab.classList.remove('tab-content-active')
+      })
+      button.classList.add('tab-btn-active')
+      tabActivate.classList.add('tab-content-active')
+    })
+  })
+}
+
 //id=start: start webcam
 const startButton = document.querySelector('#start');
 startButton.addEventListener('click', function(){
@@ -55,7 +77,8 @@ function startRecording() {
     document.querySelector('#status').innerHTML = e.toString();
     return;
   }
-
+  //TODO
+  restartVideo();
   console.log('Created MediaRecorder', mediaRecorder, 'with options', options);
   recordButton.textContent = 'Stop Recording';
   playButton.disabled = true;
@@ -68,6 +91,10 @@ function startRecording() {
   mediaRecorder.ondataavailable = handleDataAvailable;
   mediaRecorder.start();
   console.log('MediaRecorder started', mediaRecorder);
+}
+
+function restartVideo(){
+  //TODO
 }
 
 function handleDataAvailable(event) {
@@ -110,4 +137,7 @@ downloadButton.addEventListener('click', () => {
   }, 100);
 });
 
+document.addEventListener('DOMContentLoaded',()=>{
+  setupTabs();
+})
 
