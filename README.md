@@ -1,6 +1,6 @@
 # Gruntled Extension
 
-### by @borntonguyen & @leepriscilla
+### by @borntonguyen & @leepriscilla & @rickyg365
 
 Gruntled is a browser extension that allows users to record their reaction to a video, generate a link so they can send to friends that will consolidate their reactions to the respecive video.
 
