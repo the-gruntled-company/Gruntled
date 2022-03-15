@@ -26,6 +26,7 @@
                         <button id="record" disabled>Start Recording</button>
                         <button id="play" disabled>Play</button>
                         <button id="download" disabled>Download</button>
+                        <button id="save" disabled>Save</button>
                     </div>
                     <div>
                         Recording format: <select id="codecPreferences" disabled></select>
@@ -37,10 +38,21 @@
                     <video id="recorded" width="300" height ="225" playsinline loop></video>
                 </div>
                 <div class="tab-content" data-tab="2">
-                    <h3>Tab 2</h3>
+                    <h1>Saved Videos</h1>
+                    <div id="displaySave"></div>
                 </div>
                 <div class="tab-content" data-tab="3">
-                    <h3>Tab 3</h3>
+                    <!-- <form action="/action_page.php"> -->
+                        <label for="v1">Video 1: </label>
+                        <input type="file" id="v1" name="video1" accept=".webm">
+
+                        <label for="v2">Video 2:</label>
+                        <input type="file" id="v2" name="video2" accept=".webm">
+
+                        <input type="submit">
+
+                        <button id="download" disabled>Download</button>
+                      <!-- </form> -->
                 </div>
 
             </div>

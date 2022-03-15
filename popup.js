@@ -1,3 +1,5 @@
+/*all tabs*/
+
 //id=close: close popup
 const closeButton = document.querySelector('#close');
 closeButton.addEventListener('click', function() {
@@ -25,6 +27,8 @@ function setupTabs (){
     })
   })
 }
+
+/*tab1*/
 
 //id=start: start webcam
 const startButton = document.querySelector('#start');
@@ -56,6 +60,7 @@ const recordedVideo = document.querySelector('video#recorded');
 const recordButton = document.querySelector('button#record');
 const playButton = document.querySelector('button#play');
 const downloadButton = document.querySelector('button#download');
+const saveButton = document.querySelector('button#save');
 
 recordButton.addEventListener('click', () => {
   if (recordButton.textContent === 'Start Recording') {
@@ -109,6 +114,7 @@ function stopRecording() {
   recordButton.textContent = 'Start Recording';
   playButton.disabled = false;
   downloadButton.disabled = false;
+  saveButton.disabled = false;
   codecPreferences.disabled = false;
 }
 
@@ -137,7 +143,40 @@ downloadButton.addEventListener('click', () => {
   }, 100);
 });
 
+saveButton.addEventListener('click', () => {
+  var key = "Red Cat 5";
+  var value = "A nice kitty";
+
+  chrome.storage.sync.set({key: value}, function() {
+    console.log('Value is set to ' + value);
+  });
+  
+  chrome.storage.sync.get(['key'], function(result) {
+    console.log('Value currently is ' + result.key);
+  });
+});
+
+/*tab 2*/
+
+function displayLocalStorage(){
+  chrome.storage.local.get(null, function(items) {
+    for (key in items) {
+      console.log(key);
+    }
+  })
+}
+
+// function clearLocalStorage(){
+//   chrome.storage.local.clear(function() {
+//     var error = chrome.runtime.lastError;
+//       if (error) {
+//         console.error(error);
+//       }
+//    })
+//  }
+
 document.addEventListener('DOMContentLoaded',()=>{
   setupTabs();
+  displayLocalStorage();
 })
 
