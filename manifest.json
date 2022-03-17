@@ -1,32 +1,23 @@
 {
-	"manifest_version": 2,
-	"name": "Gruntled",
-	"description": "Record your reaction",
-	"version": "1.0",
-	"author": "Priscilla Lee",
+    "manifest_version": 2,
+    "name": "Gruntled",
+    "description": "Record your reaction",
+    "version": "1.0",
+    "author": "Priscilla Lee",
     "page_action": {
         "default_popup": "popup.html"
     },
-	"content_scripts": [
-		{
-			"matches": [
-				"https://www.youtube.com/watch*"
-			],
-			"js": [
-				"popup.js"
-			],
-			"css": [
-				"style.css"
-			]
-		}
-	],
-	"permissions": [
-		"declarativeContent", "tabs", "storage", "identity"
-	],
-	"background": {
-		"scripts": [
-			"background.js"
-		]
-	},
+    "content_scripts": [
+        {
+            "matches": ["https://www.youtube.com/watch*"],
+            "js": ["content.js"],
+            "run_at": "document_end"
+        }
+    ],
+    "permissions": ["declarativeContent", "tabs", "storage", "identity"],
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+    },
     "content_security_policy": "script-src 'self' https://kit.fontawesome.com/c22d4a9399.js; object-src 'self'"
 }
