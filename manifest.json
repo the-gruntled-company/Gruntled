@@ -14,6 +14,7 @@
             "run_at": "document_end"
         }
     ],
+    "web_accessible_resources": ["inject-webcam.js"],
     "permissions": ["declarativeContent", "tabs", "storage", "identity"],
     "background": {
         "scripts": ["background.js"],

@@ -19,3 +19,15 @@ port.onMessage.addListener(function (msg) {
         console.log("inject vid");
     }
 });
+
+// Functions
+let inject_script = (file, tag) => {
+    var node = document.getElementsByTagName(tag)[0];
+    var script = document.createElement("script");
+
+    script.setAttribute("type", "text/javascript");
+    script.setAttribute("src", file);
+    node.appendChild(script);
+};
+
+// inject_script(chrome.extension.getURL("inject-webcam.js"), "body");
