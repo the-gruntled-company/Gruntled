@@ -23,32 +23,43 @@ chrome.runtime.onInstalled.addListener(function () {
 chrome.runtime.onConnect.addListener((port) => {
     if (port.name === "content-bkg") {
         window.content_port = port;
-        setTimeout(() => {
-            window.content_port.postMessage({
-                data: "start webcam",
-                url: chrome.extension.getURL("inject-vid.js"),
-            });
-        }, 2000);
+        // setTimeout(() => {
+        //     window.content_port.postMessage({
+        //         data: "start webcam",
+        //         url: chrome.extension.getURL("inject-vid.js"),
+        //     });
+        // }, 2000);
         // Send message
         port.postMessage({ data: "background port opened" });
 
         port.onMessage.addListener((msg) => {
-            console.log(msg);
+            // console.log(msg);
             if (msg.status === "connected") {
                 port.postMessage({ data: "background response" });
                 console.log("bkg response sent");
-            } else if (msg.data === "content handshake established") {
-                port.postMessage({ data: "background handshake established" });
+            } else if (msg.data === "content handshake") {
+                port.postMessage({ data: "background handshake" });
                 console.log("handshake confirmed");
             }
             // window.content_port.postMessage(msg);
         });
+    } else if (port.name === "popup-port") {
+        // This might introduce a bug if window.content_port is not opened before the popup port,
+        // but it shouldnt be a problem right because the content loads automatically first
+        port.onMessage.addListener((msg) => {
+            console.log(msg);
+            if (msg.status === "connected") {
+                port.postMessage({ data: "background response" });
+                console.log("popup port opened");
+            } else if (msg.data === "start video") {
+                window.content_port.postMessage({ data: "start video" });
+            } else if (msg.data === "stop video") {
+                window.content_port.postMessage({ data: "stop video" });
+            } else if (msg.data === "restart video") {
+                window.content_port.postMessage({ data: "restart video" });
+            }
+        });
     }
-    // else if (port.name === "popup-port") {
-    //     port.onMessage.addListener((msg) => {
-    //         console.log(msg);
-    //     });
-    // }
 });
 
 ("use strict");
@@ -100,8 +111,7 @@ function getSupportedMimeTypes() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    // setupWebcam();
-    console.log("dom content loaded");
+    setupWebcam();
 });
 
 //Request webcam access from user upon installation

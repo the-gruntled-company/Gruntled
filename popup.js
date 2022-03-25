@@ -1,5 +1,8 @@
-/*all tabs*/
-console.log("loaded popup.js");
+// Open New port for communication
+var port = chrome.runtime.connect({ name: "popup-port" });
+
+// Send message
+// port.postMessage({ status: "connected", data: "content port opened" });
 
 //id=close: close popup
 const closeButton = document.querySelector("#close");
@@ -30,42 +33,17 @@ function setupTabs() {
     });
 }
 
-/*tab1*/
-
 //id=start: start webcam
 const startButton = document.querySelector("#start");
 startButton.addEventListener("click", function () {
-    navigator.mediaDevices
-        .getUserMedia({
-            video: true,
-            audio: true,
-        })
-        .then((stream) => {
-            chrome.storage.local.set(
-                {
-                    camAccess: true,
-                },
-                () => {}
-            );
-            document.querySelector("button#start").disabled = true;
-            document.querySelector("button#record").disabled = false;
-            window.stream = stream;
-
-            const gumVideo = document.querySelector("video#gum");
-            gumVideo.srcObject = stream;
-
-            getSupportedMimeTypes().forEach((mimeType) => {
-                const option = document.createElement("option");
-                option.value = mimeType;
-                option.innerText = option.value;
-                codecPreferences.appendChild(option);
-            });
-            codecPreferences.disabled = false;
-        })
-        .catch((e) => {
-            document.querySelector("#status").innerHTML = e.toString();
-            console.error(e);
-        });
+    port.postMessage({ data: "restart video" });
+    chrome.tabs.create({
+        url: chrome.extension.getURL("webcam.html"),
+        active: true,
+    });
+    chrome.runtime.getBackgroundPage(function (backgroundPage) {
+        backgroundPage.setupWebcam();
+    });
 });
 
 //id=title: get youtube title
@@ -86,13 +64,15 @@ const recordedVideo = document.querySelector("video#recorded");
 const recordButton = document.querySelector("button#record");
 const playButton = document.querySelector("button#play");
 const downloadButton = document.querySelector("button#download");
-const saveButton = document.querySelector("button#save");
 
 recordButton.addEventListener("click", () => {
     if (recordButton.textContent === "Start Recording") {
         startRecording();
+        port.postMessage({ data: "restart video" });
     } else {
+        console.log("stop record event");
         stopRecording();
+        window.port.postMessage({ data: "stop video" });
     }
 });
 
@@ -110,7 +90,9 @@ function startRecording() {
         return;
     }
     //TODO
-    restartVideo();
+    // restartVideo();
+    // port.postMessage({ data: "start video" });
+
     console.log(
         "Created MediaRecorder",
         mediaRecorder,
@@ -122,22 +104,17 @@ function startRecording() {
     downloadButton.disabled = true;
     codecPreferences.disabled = true;
     mediaRecorder.onstop = (event) => {
+        // port.postMessage({ data: "stop video" });
         console.log("Recorder stopped: ", event);
         console.log("Recorded Blobs: ", recordedBlobs);
     };
     mediaRecorder.ondataavailable = handleDataAvailable;
     mediaRecorder.start();
-    restartVideo();
     console.log("MediaRecorder started", mediaRecorder);
 }
 
 function restartVideo() {
-    //TODO
-    // Select Main Video Element, might have to make this run in the content script, use background script to coordinate
-    const video_element = document.getElementById("movie_player");
-
-    video_element.seekTo(0);
-    video_element.playVideo();
+    port.postMessage({ data: "restart video" });
 }
 
 function handleDataAvailable(event) {
@@ -148,11 +125,12 @@ function handleDataAvailable(event) {
 }
 
 function stopRecording() {
+    // port.postMessage({ data: "stop video" });
+
     mediaRecorder.stop();
     recordButton.textContent = "Start Recording";
     playButton.disabled = false;
     downloadButton.disabled = false;
-    saveButton.disabled = false;
     codecPreferences.disabled = false;
 }
 
@@ -183,39 +161,6 @@ downloadButton.addEventListener("click", () => {
     }, 100);
 });
 
-saveButton.addEventListener("click", () => {
-    var key = "Red Cat 5";
-    var value = "A nice kitty";
-
-    chrome.storage.sync.set({ key: value }, function () {
-        console.log("Value is set to " + value);
-    });
-
-    chrome.storage.sync.get(["key"], function (result) {
-        console.log("Value currently is " + result.key);
-    });
-});
-
-/*tab 2*/
-
-function displayLocalStorage() {
-    chrome.storage.local.get(null, function (items) {
-        for (key in items) {
-            console.log(key);
-        }
-    });
-}
-
-// function clearLocalStorage(){
-//   chrome.storage.local.clear(function() {
-//     var error = chrome.runtime.lastError;
-//       if (error) {
-//         console.error(error);
-//       }
-//    })
-//  }
-
 document.addEventListener("DOMContentLoaded", () => {
     setupTabs();
-    displayLocalStorage();
 });
