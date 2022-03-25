@@ -91,7 +91,6 @@ function startRecording() {
     }
     //TODO
     // restartVideo();
-    // port.postMessage({ data: "start video" });
 
     console.log(
         "Created MediaRecorder",
@@ -104,7 +103,6 @@ function startRecording() {
     downloadButton.disabled = true;
     codecPreferences.disabled = true;
     mediaRecorder.onstop = (event) => {
-        // port.postMessage({ data: "stop video" });
         console.log("Recorder stopped: ", event);
         console.log("Recorded Blobs: ", recordedBlobs);
     };
@@ -125,8 +123,6 @@ function handleDataAvailable(event) {
 }
 
 function stopRecording() {
-    // port.postMessage({ data: "stop video" });
-
     mediaRecorder.stop();
     recordButton.textContent = "Start Recording";
     playButton.disabled = false;
