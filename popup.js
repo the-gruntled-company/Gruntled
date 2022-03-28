@@ -33,17 +33,88 @@ function setupTabs() {
     });
 }
 
+async function getCurrentTab() {
+    let queryOptions = { active: true, currentWindow: true };
+    let [tab] = await chrome.tabs.query(queryOptions);
+    return tab;
+}
+
+function getSupportedMimeTypes() {
+    const possibleTypes = [
+        "video/webm;codecs=vp9,opus",
+        "video/webm;codecs=vp8,opus",
+        "video/webm;codecs=h264,opus",
+        "video/mp4;codecs=h264,aac",
+    ];
+    return possibleTypes.filter((mimeType) => {
+        return MediaRecorder.isTypeSupported(mimeType);
+    });
+}
+
+// Can make it start when extension Icon is clicked
+function startupWeb() {
+    return navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+    });
+}
+
+let already_started = startupWeb();
+console.log(already_started);
+// But show only when start camera button is clicked
+function setupWeb() {
+    // navigator.mediaDevices
+    //     .getUserMedia({
+    //         video: true,
+    //         audio: true,
+    //     })
+
+    already_started
+        .then((stream) => {
+            chrome.storage.local.set(
+                {
+                    camAccess: true,
+                },
+                () => {}
+            );
+            document.querySelector("button#start").disabled = true;
+            document.querySelector("button#record").disabled = false;
+            window.stream = stream;
+
+            const gumVideo = document.querySelector("video#gum");
+            gumVideo.srcObject = stream;
+
+            getSupportedMimeTypes().forEach((mimeType) => {
+                const option = document.createElement("option");
+                option.value = mimeType;
+                option.innerText = option.value;
+                codecPreferences.appendChild(option);
+            });
+            codecPreferences.disabled = false;
+        })
+        .catch((e) => {
+            document.querySelector("#status").innerHTML = e.toString();
+            console.error(e);
+        });
+}
+
 //id=start: start webcam
 const startButton = document.querySelector("#start");
 startButton.addEventListener("click", function () {
-    port.postMessage({ data: "restart video" });
-    chrome.tabs.create({
-        url: chrome.extension.getURL("webcam.html"),
-        active: true,
-    });
-    chrome.runtime.getBackgroundPage(function (backgroundPage) {
-        backgroundPage.setupWebcam();
-    });
+    port.postMessage({ data: "stop video" });
+    // port.postMessage({ data: "Start Webcam" });
+
+    setupWeb();
+    // let new_tab = getCurrentTab();
+    // new_tab.executeScript("inject-webcam.js");
+
+    // chrome.tabs.create({
+    //     url: chrome.extension.getURL("webcam.html"),
+    //     active: true,
+    // });
+    // chrome.runtime.getBackgroundPage(function (backgroundPage) {
+    //     backgroundPage.setupWebcam();
+    // });
 });
 
 //id=title: get youtube title
