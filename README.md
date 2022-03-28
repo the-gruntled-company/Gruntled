@@ -5,8 +5,8 @@
 Gruntled is a browser extension that allows users to record their reaction to a video, generate a link so they can send to friends that will consolidate their reactions to the respecive video.
 
 
-Here's a link to an [in-progress prototype.](https://projects.invisionapp.com/d/main?origin=v7#/console/21954568/465300953/comments?scrollOffset=150.5454559326172)
-
+Here's a link to an [in-progress prototype](https://projects.invisionapp.com/d/main?origin=v7#/console/21954568/465300953/comments?scrollOffset=150.5454559326172)
+& [a video tutorial on how to get it running on your machine](https://streamable.com/1552os)
 
 <h5 align="center">  Prototype Instructions </h5>
 1) Zoom out of prototype (if needed){'CTRL' + '-'} <br>
@@ -20,8 +20,7 @@ We believe creating a reaction-sharing browser extension for all media content c
 We will know this is true when we see an increase of reaction videos created with our extension
 
 
-<h5 align="center"> How To Get The Extension Running on Chrome </h5> [video tutorial](https://streamable.com/1552os)
-
+<h5 align="center"> How To Get The Extension Running on Chrome </h5>  
 1) Go to github.com/borntonguyen/Gruntled (you are here!) <br>
 2) Click on the green drop-down 'Code' <br>
 3) Download ZIP <br>
@@ -34,9 +33,8 @@ We will know this is true when we see an increase of reaction videos created wit
 10) Select the extracted folder <br>
 11) Nice, the Extension is now on your machine, you could click on the extensions icon and pin it! 
 
-
-
-
+<br>
+<br>
 License 
 Copyright (c) 2014, The WebRTC project authors. All rights reserved.
 
