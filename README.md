@@ -20,7 +20,8 @@ We believe creating a reaction-sharing browser extension for all media content c
 We will know this is true when we see an increase of reaction videos created with our extension
 
 
-<h5 align="center"> How To Get The Extension Running on Chrome [video tutorial](https://streamable.com/1552os)</h5>
+<h5 align="center"> How To Get The Extension Running on Chrome </h5> [video tutorial](https://streamable.com/1552os)
+
 1) Go to github.com/borntonguyen/Gruntled (you are here!) <br>
 2) Click on the green drop-down 'Code' <br>
 3) Download ZIP <br>
