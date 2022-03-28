@@ -6,6 +6,19 @@ Gruntled is a browser extension that allows users to record their reaction to a 
 
 Here's a link to an [in-progress prototype.](https://projects.invisionapp.com/d/main?origin=v7#/console/21954568/465300953/comments?scrollOffset=150.5454559326172)
 
+<h5 align="center"> How To Get The Extension Running on Chrome </h5>
+1) Go to github.com/borntonguyen/Gruntled (you are here!)
+2) Click on the green drop-down 'Code'
+3) Download ZIP
+4) Go to File Explorer, right click the file, click 'Extract Here'
+5) Go to browser settings (the three vertical dots in the top right corner)
+6) Click on 'Settings'
+7) Click 'Extensions'
+8) Toggle 'Developer Mode'
+9) Click 'Load Unpacked' 
+10) Select the extracted folder
+11) Nice, the Extension is now on your machine, you could click on the extensions icon and pin it! 
+
 <h5 align="center">  Prototype Instructions </h5>
 1) Zoom out of prototype (if needed){'CTRL' + '-'} <br>
 2) Click anywhere on the proto to highlight hotzones to progress through the prototype. <br>
