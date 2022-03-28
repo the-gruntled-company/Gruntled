@@ -5,7 +5,7 @@
 Gruntled is a browser extension that allows users to record their reaction to a video, generate a link so they can send to friends that will consolidate their reactions to the respecive video.
 
 
-Here's a link to an [in-progress prototype](https://projects.invisionapp.com/d/main?origin=v7#/console/21954568/465300953/comments?scrollOffset=150.5454559326172)
+Here's a link to an [in-progress prototype](https://invis.io/6812JG27S2X3#/465300953_Base)
 & [a video tutorial on how to get it running on your machine](https://streamable.com/1552os)
 
 <h5 align="center">  Prototype Instructions </h5>
