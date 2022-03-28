@@ -34,6 +34,8 @@ We will know this is true when we see an increase of reaction videos created wit
 11) Nice, the Extension is now on your machine, you could click on the extensions icon and pin it! 
 
 
+
+
 License 
 Copyright (c) 2014, The WebRTC project authors. All rights reserved.
 
