@@ -33,11 +33,11 @@ function setupTabs() {
     });
 }
 
-async function getCurrentTab() {
-    let queryOptions = { active: true, currentWindow: true };
-    let [tab] = await chrome.tabs.query(queryOptions);
-    return tab;
-}
+// async function getCurrentTab() {
+//     let queryOptions = { active: true, currentWindow: true };
+//     let [tab] = await chrome.tabs.query(queryOptions);
+//     return tab;
+// }
 
 function getSupportedMimeTypes() {
     const possibleTypes = [
@@ -205,11 +205,13 @@ playButton.addEventListener("click", () => {
     const mimeType = codecPreferences.options[
         codecPreferences.selectedIndex
     ].value.split(";", 1)[0];
+
     const superBuffer = new Blob(recordedBlobs, { type: mimeType });
     recordedVideo.src = null;
     recordedVideo.srcObject = null;
     recordedVideo.src = window.URL.createObjectURL(superBuffer);
     recordedVideo.controls = true;
+    port.postMessage({ data: "restart video" });
     recordedVideo.play();
 });
 
