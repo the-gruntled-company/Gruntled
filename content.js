@@ -15,7 +15,42 @@ port.onMessage.addListener(function (msg) {
     } else if (msg.data === "background handshake established") {
         console.log("handshake confirmed");
     } else if (msg.data === "start webcam") {
-        inject_script(msg.url, "body");
         console.log("inject vid");
+
+        window.onload = () => {
+        setTimeout(() => {
+            let container = document.querySelectorAll(
+                "#info h1.ytd-video-primary-info-renderer"
+            )[0];
+    
+            let btn = document.createElement("button");
+            btn.id = "downloadVideo";
+            btn.setAttribute("role", "button");
+            btn.innerText = "PLEASE WORK";
+    
+            container.appendChild(btn);
+        }, 5000)
+    }
+        console.log("Download button appended");
     }
 });
+
+
+// window.onload = () => {
+// 	console.log("Loaded");
+// 	setTimeout(() => {
+// 		let btn = document.createElement("button");
+// 		btn.id = "downloadVideo";
+// 		btn.setAttribute("role", "button");
+// 		btn.innerText = "Download";
+// 	}, 5000)
+// }
+
+// chrome.runtime.onMessage.addListener(
+//     function(request, sender, sendResponse) {
+//         console.log("background.js got a message")
+//         console.log(request);
+//         console.log(sender);
+//         sendResponse("bar");
+//     }
+// );

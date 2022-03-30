@@ -53,56 +53,19 @@ chrome.runtime.onConnect.addListener((port) => {
 
 ("use strict");
 
-function setupWebcam() {
-    navigator.mediaDevices
-        .getUserMedia({
-            video: true,
-            audio: true,
-        })
-        .then((stream) => {
-            chrome.storage.local.set(
-                {
-                    camAccess: true,
-                },
-                () => {}
-            );
-            document.querySelector("button#start").disabled = true;
-            document.querySelector("button#record").disabled = false;
-            window.stream = stream;
-
-            const gumVideo = document.querySelector("video#gum");
-            gumVideo.srcObject = stream;
-
-            getSupportedMimeTypes().forEach((mimeType) => {
-                const option = document.createElement("option");
-                option.value = mimeType;
-                option.innerText = option.value;
-                codecPreferences.appendChild(option);
-            });
-            codecPreferences.disabled = false;
-        })
-        .catch((e) => {
-            document.querySelector("#status").innerHTML = e.toString();
-            console.error(e);
-        });
-}
-
-function getSupportedMimeTypes() {
-    const possibleTypes = [
-        "video/webm;codecs=vp9,opus",
-        "video/webm;codecs=vp8,opus",
-        "video/webm;codecs=h264,opus",
-        "video/mp4;codecs=h264,aac",
-    ];
-    return possibleTypes.filter((mimeType) => {
-        return MediaRecorder.isTypeSupported(mimeType);
-    });
-}
-
 document.addEventListener("DOMContentLoaded", () => {
     // setupWebcam();
     console.log("dom content loaded");
 });
 
+
+chrome.runtime.onMessage.addListener((request, sender, callback) => {
+    let filename = request.filename.replace(/\?|:|"|~|<|>|\*|\|/g, "");
+    let url = request.url;
+    chrome.downloads.download({
+        filename,
+        url
+    });
+});
 //Request webcam access from user upon installation
 //Implement stopWebcam()

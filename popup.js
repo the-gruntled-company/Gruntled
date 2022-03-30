@@ -60,13 +60,25 @@ startButton.addEventListener("click", function () {
                 option.innerText = option.value;
                 codecPreferences.appendChild(option);
             });
-            codecPreferences.disabled = false;
+            codecPreferences.disabled = false;  
         })
         .catch((e) => {
             document.querySelector("#status").innerHTML = e.toString();
             console.error(e);
         });
 });
+
+function getSupportedMimeTypes() {
+    const possibleTypes = [
+        "video/webm;codecs=vp9,opus",
+        "video/webm;codecs=vp8,opus",
+        "video/webm;codecs=h264,opus",
+        "video/mp4;codecs=h264,aac",
+    ];
+    return possibleTypes.filter((mimeType) => {
+        return MediaRecorder.isTypeSupported(mimeType);
+    });
+}
 
 //id=title: get youtube title
 chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -109,8 +121,6 @@ function startRecording() {
         document.querySelector("#status").innerHTML = e.toString();
         return;
     }
-    //TODO
-    restartVideo();
     console.log(
         "Created MediaRecorder",
         mediaRecorder,
@@ -127,17 +137,7 @@ function startRecording() {
     };
     mediaRecorder.ondataavailable = handleDataAvailable;
     mediaRecorder.start();
-    restartVideo();
     console.log("MediaRecorder started", mediaRecorder);
-}
-
-function restartVideo() {
-    //TODO
-    // Select Main Video Element, might have to make this run in the content script, use background script to coordinate
-    const video_element = document.getElementById("movie_player");
-
-    video_element.seekTo(0);
-    video_element.playVideo();
 }
 
 function handleDataAvailable(event) {

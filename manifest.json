@@ -14,7 +14,7 @@
             "run_at": "document_end"
         }
     ],
-    "permissions": ["declarativeContent", "tabs", "storage", "identity"],
+    "permissions": ["declarativeContent", "tabs", "storage", "identity", "https://www.googleapis.com/*"],
     "background": {
         "scripts": ["background.js"],
         "persistent": false
