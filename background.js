@@ -23,6 +23,13 @@ chrome.runtime.onInstalled.addListener(function () {
 chrome.runtime.onConnect.addListener((port) => {
     if (port.name === "content-bkg") {
         window.content_port = port;
+        // setTimeout(() => {
+        //     window.content_port.postMessage({
+        //         data: "start webcam",
+        //         url: chrome.extension.getURL("inject-vid.js"),
+        //     });
+        // }, 2000);
+        // Send message
         port.postMessage({ data: "background port opened" });
 
         port.onMessage.addListener((msg) => {
@@ -61,4 +68,51 @@ chrome.runtime.onConnect.addListener((port) => {
 
 function setupWebcam() {
     console.log("test webcam setup");
+    // navigator.mediaDevices
+    //     .getUserMedia({
+    //         video: true,
+    //         audio: true,
+    //     })
+    //     .then((stream) => {
+    //         chrome.storage.local.set(
+    //             {
+    //                 camAccess: true,
+    //             },
+    //             () => {}
+    //         );
+    //         document.querySelector("button#start").disabled = true;
+    //         document.querySelector("button#record").disabled = false;
+    //         window.stream = stream;
+
+    //         const gumVideo = document.querySelector("video#gum");
+    //         gumVideo.srcObject = stream;
+
+    //         getSupportedMimeTypes().forEach((mimeType) => {
+    //             const option = document.createElement("option");
+    //             option.value = mimeType;
+    //             option.innerText = option.value;
+    //             codecPreferences.appendChild(option);
+    //         });
+    //         codecPreferences.disabled = false;
+    //     })
+    //     .catch((e) => {
+    //         document.querySelector("#status").innerHTML = e.toString();
+    //         console.error(e);
+    //     });
+
+// function getSupportedMimeTypes() {
+//     const possibleTypes = [
+//         "video/webm;codecs=vp9,opus",
+//         "video/webm;codecs=vp8,opus",
+//         "video/webm;codecs=h264,opus",
+//         "video/mp4;codecs=h264,aac",
+//     ];
+//     return possibleTypes.filter((mimeType) => {
+//         return MediaRecorder.isTypeSupported(mimeType);
+//     });
+// }
+
+// document.addEventListener("DOMContentLoaded", () => {
+//     setupWebcam();
+// });
 }
