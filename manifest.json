@@ -1,10 +1,10 @@
 {
-    "manifest_version": 2,
+    "manifest_version": 3,
     "name": "Gruntled",
     "description": "Record your reaction",
     "version": "1.0",
-    "author": "Priscilla Lee",
-    "page_action": {
+    "author": "Priscilla Lee, Ricky G",
+    "action": {
         "default_popup": "popup.html"
     },
     "content_scripts": [
@@ -14,11 +14,16 @@
             "run_at": "document_end"
         }
     ],
-    "web_accessible_resources": ["inject-webcam.js"],
+    "web_accessible_resources": [{
+        "resources": "inject-webcam.js"
+    }],
     "permissions": ["declarativeContent", "tabs", "storage", "identity"],
     "background": {
-        "scripts": ["background.js"],
+        "service_worker": "background.js",
         "persistent": false
     },
-    "content_security_policy": "script-src 'self' https://kit.fontawesome.com/c22d4a9399.js; object-src 'self'"
+    "content_security_policy": {
+        "extension_pages": "script-src 'self'",
+        "sandbox": "script-src 'self' https://kit.fontawesome.com/c22d4a9399.js; object-src 'self'"
+    }
 }

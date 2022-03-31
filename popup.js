@@ -106,7 +106,7 @@ startButton.addEventListener("click", function () {
 
     setupWeb();
     // let new_tab = getCurrentTab();
-    // new_tab.executeScript("inject-webcam.js");
+    // new_tab.scripting.executeScript("inject-webcam.js");
 
     // chrome.tabs.create({
     //     url: chrome.extension.getURL("webcam.html"),
@@ -224,10 +224,11 @@ downloadButton.addEventListener("click", () => {
     a.download = "test.webm";
     document.body.appendChild(a);
     a.click();
-    setTimeout(() => {
+    chrome.alarms.create({ delayInMinutes: 1 });
+    chrome.alarms.onAlarm.addListener(() => {
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
-    }, 100);
+    });
 });
 
 document.addEventListener("DOMContentLoaded", () => {
