@@ -14,16 +14,14 @@
             "run_at": "document_end"
         }
     ],
-    "web_accessible_resources": [{
-        "resources": "inject-webcam.js"
-    }],
+    "web_accessible_resources": [
+        {
+            "resources": ["inject-webcam.js"],
+            "matches": ["<all_urls>"]
+        }
+    ],
     "permissions": ["declarativeContent", "tabs", "storage", "identity"],
     "background": {
-        "service_worker": "background.js",
-        "persistent": false
-    },
-    "content_security_policy": {
-        "extension_pages": "script-src 'self'",
-        "sandbox": "script-src 'self' https://kit.fontawesome.com/c22d4a9399.js; object-src 'self'"
+        "service_worker": "background.js"
     }
 }

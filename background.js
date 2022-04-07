@@ -22,43 +22,63 @@ chrome.runtime.onInstalled.addListener(function () {
 // setup When another part of extension calls "connect()", this event is fired, along with the runtime.Port object you can use to send and receive messages through the connection.
 chrome.runtime.onConnect.addListener((port) => {
     if (port.name === "content-bkg") {
-        window.content_port = port;
-        // setTimeout(() => {
-        //     window.content_port.postMessage({
-        //         data: "start webcam",
-        //         url: chrome.extension.getURL("inject-vid.js"),
-        //     });
-        // }, 2000);
-        // Send message
-        port.postMessage({ data: "background port opened" });
-
+        console.log(port.name);
+        //window.content_port = port;
+        navigator.serviceWorker.controller.postMessage({
+            data: 'background port opened'
+        });
+        //port.postMessage({ data: "background port opened" });
+        
         port.onMessage.addListener((msg) => {
             // console.log(msg);
             if (msg.status === "connected") {
-                port.postMessage({ data: "background response" });
+                navigator.serviceWorker.controller.postMessage({
+                    data: 'background response'
+                });
+                //port.postMessage({ data: "background response" });
                 console.log("bkg response sent");
             } else if (msg.data === "content handshake") {
-                port.postMessage({ data: "background handshake" });
+                navigator.serviceWorker.controller.postMessage({
+                    data: 'background handshake'
+                });
+                //port.postMessage({ data: "background handshake" });
                 console.log("handshake confirmed");
             }
-            // window.content_port.postMessage(msg);
         });
     } else if (port.name === "popup-port") {
+        console.log(port.name);
         // This might introduce a bug if window.content_port is not opened before the popup port,
         // but it shouldnt be a problem right because the content loads automatically first
-        port.onMessage.addListener((msg) => {
-            console.log(msg);
-            if (msg.status === "connected") {
-                port.postMessage({ data: "background response" });
+        self.addEventListener('message', (msg) => {
+        //port.onMessage.addListener((msg) => {
+            //console.log(msg.data);
+            if (msg.type === "connected") {
+                navigator.serviceWorker.controller.postMessage({
+                    data: 'background response'
+                });
+                //port.postMessage({ data: "background response" });
                 console.log("popup port opened");
             } else if (msg.data === "start video") {
-                window.content_port.postMessage({ data: "start video" });
+                navigator.serviceWorker.controller.postMessage({
+                    data: 'start video'
+                });
+                console.log("console: start video");
+                //window.content_port.postMessage({ data: "start video" });
             } else if (msg.data === "stop video") {
-                window.content_port.postMessage({ data: "stop video" });
+                navigator.serviceWorker.controller.postMessage({
+                    data: 'stop video'
+                });
+                console.log("console: stop video");
+                //window.content_port.postMessage({ data: "stop video" });
             } else if (msg.data === "restart video") {
-                window.content_port.postMessage({ data: "restart video" });
+                navigator.serviceWorker.controller.postMessage({
+                    data: 'restart video'
+                });
+                console.log("console: restart video");
+                //window.content_port.postMessage({ data: "restart video" });
             } else if (msg.data === "start webcam") {
                 setupWebcam();
+                console.log("console: start webcam");
             }
         });
     }

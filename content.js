@@ -27,13 +27,21 @@ let pause = (ele) => {
 };
 
 // Send message
-port.postMessage({ status: "connected", data: "content port opened" });
+navigator.serviceWorker.controller.postMessage({
+    data: 'content port opened',
+    type: 'connected'
+});
+//port.postMessage({ status: "connected", data: "content port opened" });
 
 // Set up listener
-port.onMessage.addListener((msg) => {
+self.addEventListener('message', (msg) => {
+//port.onMessage.addListener((msg) => {
     // console.log(msg);
     if (msg.data === "background response") {
-        port.postMessage({ data: "content handshake" });
+        navigator.serviceWorker.controller.postMessage({
+            data: 'content handshake'
+        });
+        //port.postMessage({ data: "content handshake" });
         // console.log("content sent confirm handshake");
     } else if (msg.data === "background handshake") {
         console.log("handshake confirmed");

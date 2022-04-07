@@ -101,7 +101,10 @@ function setupWeb() {
 //id=start: start webcam
 const startButton = document.querySelector("#start");
 startButton.addEventListener("click", function () {
-    port.postMessage({ data: "stop video" });
+    navigator.serviceWorker.controller.postMessage({
+        data: 'stop video'
+    });
+    //port.postMessage({ data: "stop video" });
     // port.postMessage({ data: "Start Webcam" });
 
     setupWeb();
@@ -139,11 +142,17 @@ const downloadButton = document.querySelector("button#download");
 recordButton.addEventListener("click", () => {
     if (recordButton.textContent === "Start Recording") {
         startRecording();
-        port.postMessage({ data: "restart video" });
+        navigator.serviceWorker.controller.postMessage({
+            data: 'restart video'
+        });
+        //port.postMessage({ data: "restart video" });
     } else {
         console.log("stop record event");
         stopRecording();
-        window.port.postMessage({ data: "stop video" });
+        navigator.serviceWorker.controller.postMessage({
+            data: 'stop video'
+        });
+        //window.port.postMessage({ data: "stop video" });
     }
 });
 
@@ -160,8 +169,6 @@ function startRecording() {
         document.querySelector("#status").innerHTML = e.toString();
         return;
     }
-    //TODO
-    // restartVideo();
 
     console.log(
         "Created MediaRecorder",
@@ -183,7 +190,10 @@ function startRecording() {
 }
 
 function restartVideo() {
-    port.postMessage({ data: "restart video" });
+    navigator.serviceWorker.controller.postMessage({
+        data: 'restart video'
+    });
+    //port.postMessage({ data: "restart video" });
 }
 
 function handleDataAvailable(event) {
@@ -211,7 +221,10 @@ playButton.addEventListener("click", () => {
     recordedVideo.srcObject = null;
     recordedVideo.src = window.URL.createObjectURL(superBuffer);
     recordedVideo.controls = true;
-    port.postMessage({ data: "restart video" });
+    navigator.serviceWorker.controller.postMessage({
+        data: 'restart video'
+    });
+    //port.postMessage({ data: "restart video" });
     recordedVideo.play();
 });
 
