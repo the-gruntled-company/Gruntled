@@ -24,14 +24,27 @@ chrome.runtime.onConnect.addListener((port) => {
     if (port.name === "content-bkg") {
         console.log(port.name);
         //window.content_port = port;
-        navigator.serviceWorker.controller.postMessage({
-            data: 'background port opened'
-        });
+
+
+        // navigator.serviceWorker.controller.postMessage({
+        //     data: 'background port opened'
+        // });
         //port.postMessage({ data: "background port opened" });
         
         port.onMessage.addListener((msg) => {
             // console.log(msg);
-            if (msg.status === "connected") {
+            if (msg.data.type === "connected") {
+
+                if ('serviceWorker' in navigator) {
+                    if (navigator.serviceWorker.controller) {
+                        console.log(`This page is currently controlled by: ${navigator.serviceWorker.controller}`);
+                    } else {
+                        console.log('This page is not currently controlled by a service worker.');
+                    }
+                } else {
+                    console.log('Service workers are not supported.');
+                }
+
                 navigator.serviceWorker.controller.postMessage({
                     data: 'background response'
                 });
@@ -52,7 +65,18 @@ chrome.runtime.onConnect.addListener((port) => {
         self.addEventListener('message', (msg) => {
         //port.onMessage.addListener((msg) => {
             //console.log(msg.data);
-            if (msg.type === "connected") {
+            if (msg.data.type === "connected") {
+
+                if ('serviceWorker' in navigator) {
+                    if (navigator.serviceWorker.controller) {
+                        console.log(`This page is currently controlled by: ${navigator.serviceWorker.controller}`);
+                    } else {
+                        console.log('This page is not currently controlled by a service worker.');
+                    }
+                } else {
+                    console.log('Service workers are not supported.');
+                }
+
                 navigator.serviceWorker.controller.postMessage({
                     data: 'background response'
                 });
@@ -76,10 +100,11 @@ chrome.runtime.onConnect.addListener((port) => {
                 });
                 console.log("console: restart video");
                 //window.content_port.postMessage({ data: "restart video" });
-            } else if (msg.data === "start webcam") {
-                setupWebcam();
-                console.log("console: start webcam");
             }
+            // } else if (msg.data === "start webcam") {
+            //     setupWebcam();
+            //     console.log("console: start webcam");
+            // }
         });
     }
 });
