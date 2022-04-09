@@ -1,14 +1,20 @@
-// Open New port for communication
-var port = chrome.runtime.connect({ name: "popup-port" });
+console.log("popup.js Loaded");
 
-// Send message
-// port.postMessage({ status: "connected", data: "content port opened" });
+// Buttons
+const start_button = document.getElementById("start");
+const record_button = document.getElementById("record");
+const play_button = document.getElementById("play");
+const download_button = document.getElementById("download");
 
-//id=close: close popup
-const closeButton = document.querySelector("#close");
-closeButton.addEventListener("click", function () {
-    window.close();
-});
+// Video Containers
+const gum_video = document.getElementById("gum");
+const recorded_video = document.getElementById("recorded");
+
+let addCustomEventListener = (ele, custom_func) => {
+    ele.addEventListener("click", (e) => {
+        custom_func && custom_func(); // if no custom func doesnt run it
+    });
+};
 
 //setup tabs
 function setupTabs() {
@@ -33,43 +39,37 @@ function setupTabs() {
     });
 }
 
-// async function getCurrentTab() {
-//     let queryOptions = { active: true, currentWindow: true };
-//     let [tab] = await chrome.tabs.query(queryOptions);
-//     return tab;
-// }
-
-function getSupportedMimeTypes() {
-    const possibleTypes = [
-        "video/webm;codecs=vp9,opus",
-        "video/webm;codecs=vp8,opus",
-        "video/webm;codecs=h264,opus",
-        "video/mp4;codecs=h264,aac",
-    ];
-    return possibleTypes.filter((mimeType) => {
-        return MediaRecorder.isTypeSupported(mimeType);
-    });
-}
+//id=title: get youtube title
+chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    let title = tabs[0].title; //title
+    document.querySelector("#title").innerHTML = title;
+});
 
 // Can make it start when extension Icon is clicked
-function startupWeb() {
-    return navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: true,
-    });
+async function getCurrentTab() {
+    let queryOptions = { active: true, currentWindow: true };
+    let [tab] = await chrome.tabs.query(queryOptions);
+    return tab;
 }
 
-let already_started = startupWeb();
-console.log(already_started);
+console.log("test");
 // But show only when start camera button is clicked
 function setupWeb() {
-    // navigator.mediaDevices
-    //     .getUserMedia({
-    //         video: true,
-    //         audio: true,
-    //     })
+    getCurrentTab().then((tab) => {
+        chrome.scripting.executeScript({
+            target: { tabId: tab.id },
+            files: ["content.js"],
+        });
+    });
 
-    already_started
+    if (navigator.mediaDevices === undefined) {
+        navigator.mediaDevices = {};
+    }
+    navigator.mediaDevices
+        .getUserMedia({
+            video: true,
+            audio: true,
+        })
         .then((stream) => {
             chrome.storage.local.set(
                 {
@@ -77,12 +77,12 @@ function setupWeb() {
                 },
                 () => {}
             );
-            document.querySelector("button#start").disabled = true;
-            document.querySelector("button#record").disabled = false;
+            start_button.disabled = true;
+            record_button.disabled = false;
             window.stream = stream;
 
-            const gumVideo = document.querySelector("video#gum");
-            gumVideo.srcObject = stream;
+            // const gumVideo = document.querySelector("video#gum");
+            gum_video.srcObject = stream;
 
             getSupportedMimeTypes().forEach((mimeType) => {
                 const option = document.createElement("option");
@@ -98,33 +98,18 @@ function setupWeb() {
         });
 }
 
-//id=start: start webcam
-const startButton = document.querySelector("#start");
-startButton.addEventListener("click", function () {
-    navigator.serviceWorker.controller.postMessage({
-        data: "stop video",
+// Setup Mime Types
+function getSupportedMimeTypes() {
+    const possibleTypes = [
+        "video/webm;codecs=vp9,opus",
+        "video/webm;codecs=vp8,opus",
+        "video/webm;codecs=h264,opus",
+        "video/mp4;codecs=h264,aac",
+    ];
+    return possibleTypes.filter((mimeType) => {
+        return MediaRecorder.isTypeSupported(mimeType);
     });
-    //port.postMessage({ data: "stop video" });
-    // port.postMessage({ data: "Start Webcam" });
-
-    setupWeb();
-    // let new_tab = getCurrentTab();
-    // new_tab.scripting.executeScript("inject-webcam.js");
-
-    // chrome.tabs.create({
-    //     url: chrome.extension.getURL("webcam.html"),
-    //     active: true,
-    // });
-    // chrome.runtime.getBackgroundPage(function (backgroundPage) {
-    //     backgroundPage.setupWebcam();
-    // });
-});
-
-//id=title: get youtube title
-chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    let title = tabs[0].title; //title
-    document.querySelector("#title").innerHTML = title;
-});
+}
 
 ("use strict");
 
@@ -133,35 +118,36 @@ let mediaRecorder;
 let recordedBlobs;
 
 const codecPreferences = document.querySelector("#codecPreferences");
-const recordedVideo = document.querySelector("video#recorded");
 
-const recordButton = document.querySelector("button#record");
-const playButton = document.querySelector("button#play");
-const downloadButton = document.querySelector("button#download");
+// Functions
+async function getCurrentTab() {
+    let queryOptions = { active: true, currentWindow: true };
+    let [tab] = await chrome.tabs.query(queryOptions);
+    return tab;
+}
 
-recordButton.addEventListener("click", () => {
-    if (recordButton.textContent === "Start Recording") {
-        startRecording();
-        navigator.serviceWorker.controller.postMessage({
-            data: "restart video",
-        });
-        //port.postMessage({ data: "restart video" });
-    } else {
-        console.log("stop record event");
-        stopRecording();
-        navigator.serviceWorker.controller.postMessage({
-            data: "stop video",
-        });
-        //window.port.postMessage({ data: "stop video" });
-    }
-});
+let play = () => {
+    console.log("Play");
+};
 
-function startRecording() {
+let pause = () => {
+    console.log("Pause");
+};
+
+let restart = () => {
+    console.log("Restart");
+};
+
+let startRecording = () => {
+    console.log("Start Recording");
     recordedBlobs = [];
+
+    // Set Option
     const mimeType =
         codecPreferences.options[codecPreferences.selectedIndex].value;
     const options = { mimeType };
 
+    // Try to get Media Recorder from Media Stream
     try {
         mediaRecorder = new MediaRecorder(window.stream);
     } catch (e) {
@@ -170,31 +156,35 @@ function startRecording() {
         return;
     }
 
+    // Show Result
     console.log(
         "Created MediaRecorder",
         mediaRecorder,
         "with options",
         options
     );
+
+    // Update Record Button
     recordButton.textContent = "Stop Recording";
+
+    // Update Other Buttons and inputs
     playButton.disabled = true;
     downloadButton.disabled = true;
     codecPreferences.disabled = true;
+
+    // Set on stop event
     mediaRecorder.onstop = (event) => {
         console.log("Recorder stopped: ", event);
         console.log("Recorded Blobs: ", recordedBlobs);
     };
+
+    // When data is available start recording and handle data
     mediaRecorder.ondataavailable = handleDataAvailable;
     mediaRecorder.start();
-    console.log("MediaRecorder started", mediaRecorder);
-}
 
-function restartVideo() {
-    navigator.serviceWorker.controller.postMessage({
-        data: "restart video",
-    });
-    //port.postMessage({ data: "restart video" });
-}
+    console.log("MediaRecorder started", mediaRecorder);
+    console.log("Play Video");
+};
 
 function handleDataAvailable(event) {
     console.log("handleDataAvailable", event);
@@ -203,15 +193,35 @@ function handleDataAvailable(event) {
     }
 }
 
-function stopRecording() {
+let stopRecording = () => {
+    console.log("Stop Recording");
     mediaRecorder.stop();
     recordButton.textContent = "Start Recording";
     playButton.disabled = false;
     downloadButton.disabled = false;
     codecPreferences.disabled = false;
-}
 
-playButton.addEventListener("click", () => {
+    console.log("Pause Video");
+};
+
+let recordToggle = () => {
+    if (recordButton.textContent === "Start Recording") {
+        startRecording();
+    } else {
+        stopRecording();
+    }
+};
+
+let startCamera = () => {
+    console.log("Start Camera");
+    setupWeb();
+
+    console.log("Restart Video");
+    console.log("Pause Video");
+};
+
+let playbackVideo = () => {
+    console.log("Playback Video");
     const mimeType = codecPreferences.options[
         codecPreferences.selectedIndex
     ].value.split(";", 1)[0];
@@ -226,9 +236,12 @@ playButton.addEventListener("click", () => {
     });
     //port.postMessage({ data: "restart video" });
     recordedVideo.play();
-});
 
-downloadButton.addEventListener("click", () => {
+    console.log("Pause Video");
+};
+
+let downloadVideo = () => {
+    console.log("Download Video");
     const blob = new Blob(recordedBlobs, { type: "video/webm" });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -242,7 +255,12 @@ downloadButton.addEventListener("click", () => {
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
     });
-});
+};
+
+addCustomEventListener(play_button, playbackVideo);
+addCustomEventListener(download_button, downloadVideo);
+addCustomEventListener(record_button, recordToggle);
+addCustomEventListener(start_button, startCamera);
 
 document.addEventListener("DOMContentLoaded", () => {
     setupTabs();
