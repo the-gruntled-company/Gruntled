@@ -27,27 +27,26 @@ let pause = (ele) => {
 };
 
 // Send message
-navigator.serviceWorker.controller.postMessage({
-    data: 'content port opened',
-    type: 'connected'
-});
-//port.postMessage({ status: "connected", data: "content port opened" });
+// navigator.serviceWorker.controller.postMessage({
+//     data: 'content port opened',
+//     type: 'connected'
+// });
+port.postMessage({ status: "connected", data: "content port opened" });
 
 // Set up listener
-self.addEventListener('message', (msg) => {
-//port.onMessage.addListener((msg) => {
+// self.addEventListener('message', (msg) => {
+port.onMessage.addListener((msg) => {
     // console.log(msg);
     if (msg.data === "background response") {
-        navigator.serviceWorker.controller.postMessage({
-            data: 'content handshake'
-        });
-        //port.postMessage({ data: "content handshake" });
+        // navigator.serviceWorker.controller.postMessage({
+        //     data: 'content handshake'
+        // });
+        port.postMessage({ data: "content handshake" });
         // console.log("content sent confirm handshake");
     } else if (msg.data === "background handshake") {
         console.log("handshake confirmed");
     } else if (msg.data === "start video") {
         console.log("play clicked");
-
         play(yt_play_button);
     } else if (msg.data === "stop video") {
         console.log(yt_vid);

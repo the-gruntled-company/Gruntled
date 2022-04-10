@@ -18,91 +18,50 @@ chrome.runtime.onInstalled.addListener(function () {
     });
 });
 
+// if ('serviceWorker' in navigator) {
+//     if (navigator.serviceWorker.controller) {
+//         console.log(`This page is currently controlled by: ${navigator.serviceWorker.controller}`);
+//     } else {
+//         console.log('This page is not currently controlled by a service worker.');
+//     }
+// } else {
+//     console.log('Service workers are not supported.');
+// }
+
 // Set up port listener and their respective on message listeners
 // setup When another part of extension calls "connect()", this event is fired, along with the runtime.Port object you can use to send and receive messages through the connection.
 
 chrome.runtime.onConnect.addListener((port) => {
-    if (port.name === "content-bkg") {
-        console.log(port.name);
-        //window.content_port = port;
-
-        // navigator.serviceWorker.controller.postMessage({
-        //     data: 'background port opened'
-        // });
-        //port.postMessage({ data: "background port opened" });
-        
-        port.onMessage.addListener((msg) => {
-            // console.log(msg);
-            if (msg.data.type === "connected") {
-
-                if ('serviceWorker' in navigator) {
-                    if (navigator.serviceWorker.controller) {
-                        console.log(`This page is currently controlled by: ${navigator.serviceWorker.controller}`);
-                    } else {
-                        console.log('This page is not currently controlled by a service worker.');
-                    }
-                } else {
-                    console.log('Service workers are not supported.');
-                }
-
-                navigator.serviceWorker.controller.postMessage({
-                    data: 'background response'
-                });
-                //port.postMessage({ data: "background response" });
-                console.log("bkg response sent");
-            } else if (msg.data === "content handshake") {
-                navigator.serviceWorker.controller.postMessage({
-                    data: 'background handshake'
-                });
-                //port.postMessage({ data: "background handshake" });
-                console.log("handshake confirmed");
-            }
-        });
-    } else if (port.name === "popup-port") {
-        console.log(port.name);
-        // This might introduce a bug if window.content_port is not opened before the popup port,
-        // but it shouldnt be a problem right because the content loads automatically first
-        self.addEventListener('message', (msg) => {
-        //port.onMessage.addListener((msg) => {
-            //console.log(msg.data);
-            if (msg.data.type === "connected") {
-
-                if ('serviceWorker' in navigator) {
-                    if (navigator.serviceWorker.controller) {
-                        console.log(`This page is currently controlled by: ${navigator.serviceWorker.controller}`);
-                    } else {
-                        console.log('This page is not currently controlled by a service worker.');
-                    }
-                } else {
-                    console.log('Service workers are not supported.');
-                }
-
-                navigator.serviceWorker.controller.postMessage({
-                    data: 'background response'
-                });
-                //port.postMessage({ data: "background response" });
-                console.log("popup port opened");
-            } else if (msg.data === "start video") {
-                navigator.serviceWorker.controller.postMessage({
-                    data: 'start video'
-                });
-                console.log("console: start video");
-                //window.content_port.postMessage({ data: "start video" });
-            } else if (msg.data === "stop video") {
-                navigator.serviceWorker.controller.postMessage({
-                    data: 'stop video'
-                });
-                console.log("console: stop video");
-                //window.content_port.postMessage({ data: "stop video" });
-            } else if (msg.data === "restart video") {
-                navigator.serviceWorker.controller.postMessage({
-                    data: 'restart video'
-                });
-                console.log("console: restart video");
-                //window.content_port.postMessage({ data: "restart video" });
-            }
-        });
-    }
+    port.onMessage.addListener((msg) => {
+        if (msg.data.type === "connected") {
+            port.postMessage({ data: "background response" });
+            console.log("bkg response sent");
+        } else if (msg.data === "content handshake") {
+            // navigator.serviceWorker.controller.postMessage({
+            //     data: 'background handshake'
+            // });
+            port.postMessage({ data: "background handshake" });
+            console.log("handshake confirmed");
+        } else if (msg.data === "start video") {
+            // navigator.serviceWorker.controller.postMessage({
+            //     data: 'start video'
+            // });
+            port.postMessage({ data: "start video" });
+            console.log("console: start video");
+        } else if (msg.data === "stop video") {
+            // navigator.serviceWorker.controller.postMessage({
+            //     data: 'stop video'
+            // });
+            port.postMessage({ data: "stop video" });
+            console.log("console: stop video");
+        } else if (msg.data === "restart video") {
+            // navigator.serviceWorker.controller.postMessage({
+            //     data: 'restart video'
+            // });
+            port.postMessage({ data: "restart video" });
+            console.log("console: restart video");
+        }
+    });
 });
 
 ("use strict");
@@ -140,18 +99,6 @@ function setupWebcam() {
     //         document.querySelector("#status").innerHTML = e.toString();
     //         console.error(e);
     //     });
-
-// function getSupportedMimeTypes() {
-//     const possibleTypes = [
-//         "video/webm;codecs=vp9,opus",
-//         "video/webm;codecs=vp8,opus",
-//         "video/webm;codecs=h264,opus",
-//         "video/mp4;codecs=h264,aac",
-//     ];
-//     return possibleTypes.filter((mimeType) => {
-//         return MediaRecorder.isTypeSupported(mimeType);
-//     });
-// }
 
 // document.addEventListener("DOMContentLoaded", () => {
 //     setupWebcam();
