@@ -20,11 +20,11 @@ chrome.runtime.onInstalled.addListener(function () {
 
 // Set up port listener and their respective on message listeners
 // setup When another part of extension calls "connect()", this event is fired, along with the runtime.Port object you can use to send and receive messages through the connection.
+
 chrome.runtime.onConnect.addListener((port) => {
     if (port.name === "content-bkg") {
         console.log(port.name);
         //window.content_port = port;
-
 
         // navigator.serviceWorker.controller.postMessage({
         //     data: 'background port opened'
@@ -101,10 +101,6 @@ chrome.runtime.onConnect.addListener((port) => {
                 console.log("console: restart video");
                 //window.content_port.postMessage({ data: "restart video" });
             }
-            // } else if (msg.data === "start webcam") {
-            //     setupWebcam();
-            //     console.log("console: start webcam");
-            // }
         });
     }
 });
