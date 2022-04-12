@@ -23,7 +23,7 @@ let setupWebcam = () => {
 
             new_vid.style.height = "200px";
             new_vid.style.width = "200px";
-            new_vid.style.zIndex = "100";
+            new_vid.style.position = "absolute";
 
             window.stream = stream;
             console.log(stream);

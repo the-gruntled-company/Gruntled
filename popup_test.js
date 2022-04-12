@@ -46,11 +46,11 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
 });
 
 // Can make it start when extension Icon is clicked
-async function getCurrentTab() {
-    let queryOptions = { active: true, currentWindow: true };
-    let [tab] = await chrome.tabs.query(queryOptions);
-    return tab;
-}
+// async function getCurrentTab() {
+//     let queryOptions = { active: true, currentWindow: true };
+//     let [tab] = await chrome.tabs.query(queryOptions);
+//     return tab;
+// }
 
 console.log("test");
 // But show only when start camera button is clicked
@@ -127,11 +127,25 @@ async function getCurrentTab() {
 }
 
 let play = () => {
-    console.log("Play");
+    console.log("Play/start");
+    const yt_play_button =
+        document.getElementsByClassName("ytp-play-button")[0];
+
+    // Play
+    if (yt_play_button.title == "Play (k)") {
+        yt_play_button.click();
+    }
 };
 
 let pause = () => {
     console.log("Pause");
+    const yt_play_button =
+        document.getElementsByClassName("ytp-play-button")[0];
+
+    // Pause
+    if (yt_play_button.title == "Pause (k)") {
+        yt_play_button.click();
+    }
 };
 
 let restart = () => {
@@ -214,8 +228,19 @@ let recordToggle = () => {
 
 let startCamera = () => {
     console.log("Start Camera");
-    setupWeb();
 
+    getCurrentTab().then((tab) => {
+        // Send script to start camera
+        chrome.scripting.executeScript({
+            target: { tabId: tab.id },
+            files: ["content.js"],
+        });
+        // Pause Video
+        chrome.scripting.executeScript({
+            target: { tabId: tab.id },
+            func: pause,
+        });
+    });
     console.log("Restart Video");
     console.log("Pause Video");
 };
