@@ -1,23 +1,19 @@
 {
-    "manifest_version": 2,
-    "name": "Gruntled",
-    "description": "Record your reaction",
-    "version": "1.0",
-    "author": "Priscilla Lee",
-    "page_action": {
-        "default_popup": "popup.html"
-    },
-    "content_scripts": [
-        {
-            "matches": ["https://www.youtube.com/watch*"],
-            "js": ["content.js"],
-            "run_at": "document_end"
-        }
-    ],
-    "permissions": ["declarativeContent", "tabs", "storage", "identity", "https://www.googleapis.com/*"],
+    "name": "Test Extension - from scratch",
+    "version": "0.1",
+    "manifest_version": 3,
     "background": {
-        "scripts": ["background.js"],
-        "persistent": false
+        "service_worker": "background.js"
     },
-    "content_security_policy": "script-src 'self' https://kit.fontawesome.com/c22d4a9399.js; object-src 'self'"
+    "permissions": [
+        "scripting",
+        "activeTab",
+        "declarativeContent",
+        "tabs",
+        "storage",
+        "identity"
+    ],
+    "action": {
+        "default_popup": "popup.html"
+    }
 }

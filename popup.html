@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script
-            src="https://kit.fontawesome.com/c22d4a9399.js"
-            crossorigin="anonymous"
-        ></script>
+        <!-- <script src="https://kit.fontawesome.com/c22d4a9399.js" 
+        integrity=""
+        crossorigin="anonymous"></script> -->
         <link rel="stylesheet" href="style.css" />
         <title>Gruntled</title>
     </head>
@@ -28,10 +27,9 @@
                 <div class="tab-content tab-content-active" data-tab="1">
                     <div>
                         <button id="start">Start camera</button>
-                        <button id="record" disabled>Start Recording</button>
-                        <button id="play" disabled>Play</button>
-                        <button id="download" disabled>Download</button>
-                        <button id="save" disabled>Save</button>
+                        <button id="record">Start Recording</button>
+                        <button id="play">Play</button>
+                        <button id="download">Download</button>
                     </div>
                     <div>
                         Recording format:
@@ -57,27 +55,14 @@
                     ></video>
                 </div>
                 <div class="tab-content" data-tab="2">
-                    <h1>Saved Videos</h1>
-                    <div id="displaySave"></div>
+                    <h3>Tab 2</h3>
                 </div>
                 <div class="tab-content" data-tab="3">
-                    <!-- <form action="/action_page.php"> -->
-                    <label for="v1">Video 1: </label>
-                    <input type="file" id="v1" name="video1" accept=".webm" />
-
-                    <label for="v2">Video 2:</label>
-                    <input type="file" id="v2" name="video2" accept=".webm" />
-
-                    <input type="submit" />
-
-                    <button id="download" disabled>Download</button>
-                    <!-- </form> -->
+                    <h3>Tab 3</h3>
                 </div>
             </div>
         </div>
 
-        <script src="popup.js"></script>
-        <script src="background.js"></script>
-        <script src="content.js"></script>
+        <script src="popup_test.js"></script>
     </body>
 </html>

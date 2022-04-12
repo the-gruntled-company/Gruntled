@@ -1,56 +1,42 @@
-console.log("content.js loaded"); // pls load
+console.log("Content Script Loaded");
 
-// Open New port for communication
-var port = chrome.runtime.connect({ name: "content-bkg" });
+let setupWebcam = () => {
+    navigator.mediaDevices
+        .getUserMedia({
+            video: true,
+            audio: true,
+        })
+        .then((stream) => {
+            chrome.storage.local.set(
+                {
+                    camAccess: true,
+                },
+                () => {}
+            );
+            const yt_frame = document.querySelector(".html5-video-container");
+            const new_vid = document.createElement("video");
+            new_vid.srcObject = stream;
 
-// Send message
-port.postMessage({ status: "connected", data: "content port opened" });
+            new_vid.playsInline = true;
+            new_vid.autoplay = true;
+            new_vid.muted = true;
 
-// Set up listener
-port.onMessage.addListener(function (msg) {
-    console.log(msg);
-    if (msg.data === "background response") {
-        port.postMessage({ data: "content handshake established" });
-        console.log("content sent confirm handshake");
-    } else if (msg.data === "background handshake established") {
-        console.log("handshake confirmed");
-    } else if (msg.data === "start webcam") {
-        console.log("inject vid");
+            new_vid.style.height = "200px";
+            new_vid.style.width = "200px";
+            new_vid.style.position = "absolute";
 
-        window.onload = () => {
-        setTimeout(() => {
-            let container = document.querySelectorAll(
-                "#info h1.ytd-video-primary-info-renderer"
-            )[0];
-    
-            let btn = document.createElement("button");
-            btn.id = "downloadVideo";
-            btn.setAttribute("role", "button");
-            btn.innerText = "PLEASE WORK";
-    
-            container.appendChild(btn);
-        }, 5000)
-    }
-        console.log("Download button appended");
-    }
-});
+            window.stream = stream;
+            console.log(stream);
+            console.log(new_vid);
+            console.log(yt_frame);
 
+            yt_frame.appendChild(new_vid);
+            // const gumVideo = document.querySelector("video#gum");
+            // gum_video.srcObject = stream;
+        })
+        .catch((e) => {
+            console.error(e);
+        });
+};
 
-// window.onload = () => {
-// 	console.log("Loaded");
-// 	setTimeout(() => {
-// 		let btn = document.createElement("button");
-// 		btn.id = "downloadVideo";
-// 		btn.setAttribute("role", "button");
-// 		btn.innerText = "Download";
-// 	}, 5000)
-// }
-
-// chrome.runtime.onMessage.addListener(
-//     function(request, sender, sendResponse) {
-//         console.log("background.js got a message")
-//         console.log(request);
-//         console.log(sender);
-//         sendResponse("bar");
-//     }
-// );
+setupWebcam();

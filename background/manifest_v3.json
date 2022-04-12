@@ -1,0 +1,11 @@
+{
+    "name": "Template - Background v3",
+    "version": "0.00",
+    "description": "a sample description",
+    "background": {
+        "service_worker": ["background.js"]
+    },
+    "permissions": ["scripting"],
+    "host_permssions": ["<all_urls>"],
+    "manifest_version": 2
+}
