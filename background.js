@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 //Popup shows on youtube.com/watch
 chrome.runtime.onInstalled.addListener(function () {
     // Replace all rules ...
@@ -104,3 +105,6 @@ function setupWebcam() {
 //     setupWebcam();
 // });
 }
+=======
+console.log("Service Worker Loaded - background.js");
+>>>>>>> rg_exp

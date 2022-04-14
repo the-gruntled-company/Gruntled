@@ -1,0 +1,12 @@
+{
+    "name": "Template - Content V3",
+    "version": "0.00",
+    "description": "a sample description",
+    "content_scripts": {
+        "matches": ["<all_urls>"],
+        "js": ["content.js"],
+        "run_at": "document_end"
+    },
+    "host_permssions": ["<all_urls>"],
+    "manifest_version": 3
+}

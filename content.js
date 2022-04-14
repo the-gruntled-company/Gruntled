@@ -1,25 +1,45 @@
-console.log("content.js loaded"); // pls load
+console.log("Content Script Loaded");
 
-// Open New port for communication
-var port = chrome.runtime.connect({ name: "content-bkg" });
+let setupWebcam = () => {
+    navigator.mediaDevices
+        .getUserMedia({
+            video: true,
+            audio: true,
+        })
+        .then((stream) => {
+            chrome.storage.local.set(
+                {
+                    camAccess: true,
+                },
+                () => {}
+            );
+            const yt_frame = document.querySelector(".html5-video-container");
+            const new_vid = document.createElement("video");
+            new_vid.srcObject = stream;
 
-// My attempts
-// document.getElementById("movie_player");
+            new_vid.playsInline = true;
+            new_vid.autoplay = true;
+            new_vid.muted = true;
 
-var yt_vid = document.getElementsByClassName(
-    "video-stream html5-main-video"
-)[0];
+            new_vid.style.height = "200px";
+            new_vid.style.width = "200px";
+            new_vid.style.position = "absolute";
 
-// aria-label="Pause (k)"
-// title="Pause (k)" || "Play (k)"
-var yt_play_button = document.getElementsByClassName("ytp-play-button")[0];
+            window.stream = stream;
+            console.log(stream);
+            console.log(new_vid);
+            console.log(yt_frame);
 
-let play = (ele) => {
-    if (ele.title == "Play (k)") {
-        ele.click();
-    }
+            yt_frame.appendChild(new_vid);
+            // const gumVideo = document.querySelector("video#gum");
+            // gum_video.srcObject = stream;
+        })
+        .catch((e) => {
+            console.error(e);
+        });
 };
 
+<<<<<<< HEAD
 let pause = (ele) => {
     if (ele.title == "Pause (k)") {
         ele.click();
@@ -70,3 +90,6 @@ port.onMessage.addListener((msg) => {
 // };
 
 // inject_script(chrome.extension.getURL("inject-iframe.js"), "body");
+=======
+setupWebcam();
+>>>>>>> rg_exp

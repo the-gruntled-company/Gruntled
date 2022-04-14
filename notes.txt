@@ -1,0 +1,46 @@
+let injectFile = document.getElementById('inject-file');
+let injectFunction = document.getElementById('inject-function');
+
+async function getCurrentTab() {
+  let queryOptions = { active: true, currentWindow: true };
+  let [tab] = await chrome.tabs.query(queryOptions);
+  return tab;
+}
+
+injectFile.addEventListener('click', async () => {
+  let tab = await getCurrentTab();
+
+  chrome.scripting.executeScript({
+    target: {tabId: tab.id},
+    files: ['content-script.js']
+  });
+});
+
+function showAlert(givenName) {
+  alert(`Hello, ${givenName}`);
+}
+
+injectFunction.addEventListener('click', async () => {
+  let tab = await getCurrentTab();
+
+  let name = 'World';
+  chrome.scripting.executeScript({
+    target: {tabId: tab.id},
+    func: showAlert,
+    args: [name]
+  });
+});
+
+SOURCE: https://github.com/GoogleChrome/chrome-extensions-samples/blob/main/reference/mv3/intro/mv3-migration/content-scripts/popup.js
+
+https://blog.shahednasser.com/chrome-extension-tutorial-migrating-to-manifest-v3-from-v2/#from-background-scripts-to-service-workers
+
+https://developer.chrome.com/docs/extensions/reference/windows/#method-create
+
+https://stackoverflow.com/questions/63656707/chrome-extension-how-to-access-webcam-and-audio-at-intervals
+
+https://web.dev/media-recording-video/
+
+https://stackoverflow.com/questions/63656707/chrome-extension-how-to-access-webcam-and-audio-at-intervals
+
+

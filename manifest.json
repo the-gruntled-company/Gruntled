@@ -20,7 +20,14 @@
             "matches": ["<all_urls>"]
         }
     ],
-    "permissions": ["declarativeContent", "tabs", "storage", "identity"],
+    "permissions": [
+        "scripting",
+        "activeTab",
+        "declarativeContent",
+        "tabs",
+        "storage",
+        "identity"
+    ],
     "background": {
         "service_worker": "background.js"
     }
