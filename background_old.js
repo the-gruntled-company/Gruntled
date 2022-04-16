@@ -174,3 +174,7 @@ function setupWebcam() {
 
 //Request webcam access from user upon installation
 //Implement stopWebcam()
+
+chrome.action.onClicked.addListener(function() {
+    chrome.tabs.create({url: 'index.html'});
+  });

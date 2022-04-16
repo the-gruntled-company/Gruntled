@@ -1,5 +1,3 @@
-console.log("popup.js loaded"); // pls load
-
 // Open New port for communication
 var port = chrome.runtime.connect({ name: "popup-port" });
 
@@ -103,18 +101,11 @@ function setupWeb() {
 //id=start: start webcam
 const startButton = document.querySelector("#start");
 startButton.addEventListener("click", function () {
-<<<<<<< HEAD
-    // navigator.serviceWorker.controller.postMessage({
-    //     data: 'stop video'
-    // });
-    port.postMessage({ data: "stop video" });
-=======
     navigator.serviceWorker.controller.postMessage({
         data: "stop video",
     });
     //port.postMessage({ data: "stop video" });
     // port.postMessage({ data: "Start Webcam" });
->>>>>>> rg_exp
 
     setupWeb();
     // let new_tab = getCurrentTab();
@@ -163,19 +154,6 @@ const downloadButton = document.querySelector("button#download");
 recordButton.addEventListener("click", () => {
     if (recordButton.textContent === "Start Recording") {
         startRecording();
-<<<<<<< HEAD
-        // navigator.serviceWorker.controller.postMessage({
-        //     data: 'restart video'
-        // });
-        port.postMessage({ data: "restart video" });
-    } else {
-        console.log("stop record event");
-        stopRecording();
-        // navigator.serviceWorker.controller.postMessage({
-        //     data: 'stop video'
-        // });
-        port.postMessage({ data: "stop video" });
-=======
         navigator.serviceWorker.controller.postMessage({
             data: "restart video",
         });
@@ -187,7 +165,6 @@ recordButton.addEventListener("click", () => {
             data: "stop video",
         });
         //window.port.postMessage({ data: "stop video" });
->>>>>>> rg_exp
     }
 });
 
@@ -204,13 +181,6 @@ function startRecording() {
         document.querySelector("#status").innerHTML = e.toString();
         return;
     }
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> rg_exp
-
->>>>>>> 77295eaf7084ade686fb253b3e5677a0638ee6e3
     console.log(
         "Created MediaRecorder",
         mediaRecorder,
@@ -230,23 +200,13 @@ function startRecording() {
     console.log("MediaRecorder started", mediaRecorder);
 }
 
-<<<<<<< HEAD
-=======
 function restartVideo() {
-<<<<<<< HEAD
-    // navigator.serviceWorker.controller.postMessage({
-    //     data: 'restart video'
-    // });
-    port.postMessage({ data: "restart video" });
-=======
     navigator.serviceWorker.controller.postMessage({
         data: "restart video",
     });
     //port.postMessage({ data: "restart video" });
->>>>>>> rg_exp
 }
 
->>>>>>> 77295eaf7084ade686fb253b3e5677a0638ee6e3
 function handleDataAvailable(event) {
     console.log("handleDataAvailable", event);
     if (event.data && event.data.size > 0) {
@@ -272,17 +232,10 @@ playButton.addEventListener("click", () => {
     recordedVideo.srcObject = null;
     recordedVideo.src = window.URL.createObjectURL(superBuffer);
     recordedVideo.controls = true;
-<<<<<<< HEAD
-    // navigator.serviceWorker.controller.postMessage({
-    //     data: 'restart video'
-    // });
-    port.postMessage({ data: "restart video" });
-=======
     navigator.serviceWorker.controller.postMessage({
         data: "restart video",
     });
     //port.postMessage({ data: "restart video" });
->>>>>>> rg_exp
     recordedVideo.play();
 });
 
