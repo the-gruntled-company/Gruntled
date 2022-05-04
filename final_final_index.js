@@ -7,6 +7,13 @@ let create_btn = (btn_text, btn_id) => {
     return new_btn;
 };
 
+// For future update keep track of state instead of having so many ternary operators
+// i.e
+//      yt_vid_play = true,
+//      yt_vid_pause = false,
+//      webcam_vid_play = false,
+//      webcam_vid_pause = true,
+
 // Youtube Player Controls
 // Youtube Video Container
 const yt_vid = document.getElementsByClassName(
@@ -17,19 +24,22 @@ const yt_play_button = document.getElementsByClassName("ytp-play-button")[0];
 
 // aria-label="Pause (k)" || "Play (k)"
 let play = () => {
-    if (yt_play_button.title == "Play (k)") {
+    if (yt_play_button.title == "Pause (k)") {
         yt_play_button.click();
+        console.log("play Youtube video");
     }
 };
 
 let pause = () => {
-    if (yt_play_button.title == "Pause (k)") {
+    if (yt_play_button.title == "Play (k)") {
         yt_play_button.click();
+        console.log("pause Youtube video");
     }
 };
 
 let restart = () => {
     yt_vid.currentTime = 0;
+    console.log("restart Youtube video");
 };
 
 // Webcam Preview CSS
@@ -43,9 +53,8 @@ style.innerHTML = `
 
             .webcam-preview {
                 position: relative;
-                padding: 8px;
 
-                width: 300px;
+                width: 350px;
                 height: 250px;
 
                 display: flex;
@@ -59,11 +68,8 @@ style.innerHTML = `
             .webcam-video {
                 position: absolute;
 
-                width: 300px;
+                width: 100%;
                 height: 250px;
-
-                top: 0;
-                left: 0;
 
                 z-index: 98;
             }
@@ -97,14 +103,21 @@ style.innerHTML = `
 
             .webcam-control-panel {
                     z-index: 99;
-                
+
+                    opacity: 0;
                     width: 100%;
+                    box-sizing: border-box;
                     padding: 8px;
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
                     background-color: #adadad82;
                     border-radius: 15px;
+                    transition: opacity 200ms linear;
+            }
+
+            .webcam-preview:hover .webcam-control-panel {
+                opacity: 1;
             }
 
             #record-btn {
@@ -178,7 +191,8 @@ webcam_preview.classList.add("webcam-preview");
 // Getting Webcam Data
 const web_vid = document.createElement("video");
 web_vid.playsInline = true;
-web_vid.src = "assets/doggy.mp4";
+web_vid.autoplay = true;
+web_vid.muted = true;
 web_vid.classList.add("webcam-video");
 web_vid.classList.add("disappear");
 
@@ -201,7 +215,6 @@ let setupWebcam = () => {
 
             console.log(stream);
             console.log(web_vid);
-            console.log(yt_frame);
         })
         .catch((e) => {
             console.error(e);
@@ -231,21 +244,19 @@ const play_btn = create_btn("Playback", play_id);
 const download_btn = document.createElement("a");
 download_btn.innerHTML = "Download";
 download_btn.id = "download-btn";
-download_btn.href = "assets/doggy.mp4";
+download_btn.href = "#";
 
 // Attach Event Listeners
 // Play Button
 play_btn.addEventListener("click", () => {
     // Restart and pay Youtube Video
-    restart();
-    play();
+    // restart();
+    pause();
 
-    // Make vid visible and play
-    web_vid.classList.remove("disappear");
-    web_vid.play();
-
+    // Play/Pause Webcam this should play pause the recording
     play_btn.innerHTML == "Playback" ? web_vid.play() : web_vid.pause();
 
+    // Change Button Text
     play_btn.innerHTML =
         play_btn.innerHTML == "Playback" ? "Stop Playing" : "Playback";
 });
@@ -263,6 +274,10 @@ download_btn.addEventListener("click", () => {});
 
 // Method 2: Ternary + Function
 let start_record = () => {
+    // Setup Webcam and make visible
+    setupWebcam(); // can run this when the script is injected to speed up
+    web_vid.classList.remove("disappear");
+
     // Play Youtube Video
     restart();
     play();
@@ -277,6 +292,9 @@ let start_record = () => {
 let stop_record = () => {
     // Pause Youtube Video
     pause();
+
+    // Stop Webcam
+    web_vid.pause();
 
     // Update Button Text
     record_btn.innerHTML = "Start Recording";
@@ -302,8 +320,8 @@ r_indicator.addEventListener("mouseleave", () => {
 
 // Append to DOM
 // Get Root container
-// const root_class = ".video-stream.html5-main-video";
-// const root = document.querySelector(root_class);
+const root_class = ".html5-video-container";
+const root = document.querySelector(root_class);
 // Note: root should be the main youtube videos container
 
 // Append Video element to preview window
@@ -321,4 +339,4 @@ webcam_preview.appendChild(r_indicator);
 webcam_preview.appendChild(panel);
 
 // Append preview to root video container
-yt_vid.appendChild(webcam_preview);
+root.appendChild(webcam_preview);

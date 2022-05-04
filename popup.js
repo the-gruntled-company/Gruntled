@@ -47,53 +47,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     document.querySelector("#title").innerHTML = title;
 });
 
-// But show only when start camera button is clicked
-function setupWeb() {
-    getCurrentTab().then((tab) => {
-        chrome.scripting.executeScript({
-            target: { tabId: tab.id },
-            files: ["final_final_index.js"],
-        });
-    });
-
-    if (navigator.mediaDevices === undefined) {
-        navigator.mediaDevices = {};
-    }
-    navigator.mediaDevices
-        .getUserMedia({
-            video: true,
-            audio: true,
-        })
-        .then((stream) => {
-            chrome.storage.local.set(
-                {
-                    camAccess: true,
-                },
-                () => {}
-            );
-            start_button.disabled = true;
-            record_button.disabled = false;
-            window.stream = stream;
-
-            // const gumVideo = document.querySelector("video#gum");
-            gum_video.srcObject = stream;
-
-            getSupportedMimeTypes().forEach((mimeType) => {
-                const option = document.createElement("option");
-                option.value = mimeType;
-                option.innerText = option.value;
-                codecPreferences.appendChild(option);
-            });
-            codecPreferences.disabled = false;
-        })
-        .catch((e) => {
-            document.querySelector("#status").innerHTML = e.toString();
-            console.error(e);
-        });
-}
-
 // Setup Mime Types
-
 function getSupportedMimeTypes() {
     const possibleTypes = [
         "video/webm;codecs=vp9,opus",
@@ -120,36 +74,6 @@ async function getCurrentTab() {
     let [tab] = await chrome.tabs.query(queryOptions);
     return tab;
 }
-
-let play = () => {
-    console.log("Play/start");
-    const yt_play_button =
-        document.getElementsByClassName("ytp-play-button")[0];
-
-    // Play
-    if (yt_play_button.title == "Play (k)") {
-        yt_play_button.click();
-    }
-};
-
-let pause = () => {
-    console.log("Pause");
-    const yt_play_button =
-        document.getElementsByClassName("ytp-play-button")[0];
-
-    // Pause
-    if (yt_play_button.title == "Pause (k)") {
-        yt_play_button.click();
-    }
-};
-
-let restart = () => {
-    console.log("Restart");
-    var yt_vid = document.getElementsByClassName(
-        "video-stream html5-main-video"
-    )[0];
-    yt_vid.currentTime = 0;
-};
 
 let startRecording = () => {
     console.log("Start Recording");
@@ -232,7 +156,7 @@ let startCamera = () => {
         // Send script to start camera
         chrome.scripting.executeScript({
             target: { tabId: tab.id },
-            files: ["webcam.js"],
+            files: ["final_final_index.js"],
         });
         // Pause Video
         chrome.scripting.executeScript({
