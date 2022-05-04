@@ -52,7 +52,7 @@ function setupWeb() {
     getCurrentTab().then((tab) => {
         chrome.scripting.executeScript({
             target: { tabId: tab.id },
-            files: ["content.js"],
+            files: ["final_final_index.js"],
         });
     });
 

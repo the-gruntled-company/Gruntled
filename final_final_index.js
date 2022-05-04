@@ -7,7 +7,32 @@ let create_btn = (btn_text, btn_id) => {
     return new_btn;
 };
 
-// Add CSS
+// Youtube Player Controls
+// Youtube Video Container
+const yt_vid = document.getElementsByClassName(
+    "video-stream html5-main-video"
+)[0];
+
+const yt_play_button = document.getElementsByClassName("ytp-play-button")[0];
+
+// aria-label="Pause (k)" || "Play (k)"
+let play = () => {
+    if (yt_play_button.title == "Play (k)") {
+        yt_play_button.click();
+    }
+};
+
+let pause = () => {
+    if (yt_play_button.title == "Pause (k)") {
+        yt_play_button.click();
+    }
+};
+
+let restart = () => {
+    yt_vid.currentTime = 0;
+};
+
+// Webcam Preview CSS
 const style = document.createElement("style");
 style.innerHTML = `
             
@@ -145,17 +170,43 @@ style.innerHTML = `
 document.head.appendChild(style);
 
 // Create Elements
-
 // Webcam Preview
 const webcam_preview = document.createElement("div");
 webcam_preview.classList.add("webcam-preview");
 
 // Webcam Video
+// Getting Webcam Data
 const web_vid = document.createElement("video");
 web_vid.playsInline = true;
 web_vid.src = "assets/doggy.mp4";
 web_vid.classList.add("webcam-video");
 web_vid.classList.add("disappear");
+
+let setupWebcam = () => {
+    navigator.mediaDevices
+        .getUserMedia({
+            video: true,
+            audio: true,
+        })
+        .then((stream) => {
+            chrome.storage.local.set(
+                {
+                    camAccess: true,
+                },
+                () => {}
+            );
+
+            web_vid.srcObject = stream;
+            window.stream = stream;
+
+            console.log(stream);
+            console.log(web_vid);
+            console.log(yt_frame);
+        })
+        .catch((e) => {
+            console.error(e);
+        });
+};
 
 // Recording Indicator
 const r_indicator = document.createElement("div");
@@ -185,6 +236,10 @@ download_btn.href = "assets/doggy.mp4";
 // Attach Event Listeners
 // Play Button
 play_btn.addEventListener("click", () => {
+    // Restart and pay Youtube Video
+    restart();
+    play();
+
     // Make vid visible and play
     web_vid.classList.remove("disappear");
     web_vid.play();
@@ -200,28 +255,39 @@ download_btn.addEventListener("click", () => {});
 
 // Recording Indicator
 // Recording Indicator: click
+// Method 1: Ternary
+// record_btn.innerHTML =
+//     record_btn.innerHTML == "Start Recording"
+//         ? "Stop Recording"
+//         : "Start Recording";
+
+// Method 2: Ternary + Function
+let start_record = () => {
+    // Play Youtube Video
+    restart();
+    play();
+
+    // Update Button Text
+    record_btn.innerHTML = "Stop Recording";
+
+    // Debug
+    console.log("Start Recording");
+};
+
+let stop_record = () => {
+    // Pause Youtube Video
+    pause();
+
+    // Update Button Text
+    record_btn.innerHTML = "Start Recording";
+
+    // Debug
+    console.log("Stopped Recording");
+};
+
 record_btn.addEventListener("click", () => {
     // toggle recording indicators style, (color and animation)
     r_indicator.classList.toggle("active-recording");
-
-    // Method 1: Ternary
-    // record_btn.innerHTML =
-    //     record_btn.innerHTML == "Start Recording"
-    //         ? "Stop Recording"
-    //         : "Start Recording";
-
-    // Method 2: Ternary + Function
-    let start_record = () => {
-        record_btn.innerHTML = "Stop Recording";
-        // Debug
-        console.log("Start Recording");
-    };
-
-    let stop_record = () => {
-        record_btn.innerHTML = "Start Recording";
-        // Debug
-        console.log("Stopped Recording");
-    };
 
     record_btn.innerHTML === "Start Recording" ? start_record() : stop_record();
 });
@@ -236,8 +302,9 @@ r_indicator.addEventListener("mouseleave", () => {
 
 // Append to DOM
 // Get Root container
-const root_class = ".video-stream.html5-main-video";
-const root = document.querySelector(root_class);
+// const root_class = ".video-stream.html5-main-video";
+// const root = document.querySelector(root_class);
+// Note: root should be the main youtube videos container
 
 // Append Video element to preview window
 webcam_preview.appendChild(web_vid);
@@ -254,4 +321,4 @@ webcam_preview.appendChild(r_indicator);
 webcam_preview.appendChild(panel);
 
 // Append preview to root video container
-root.appendChild(webcam_preview);
+yt_vid.appendChild(webcam_preview);
