@@ -199,17 +199,18 @@ play_btn.addEventListener("click", () => {
 download_btn.addEventListener("click", () => {});
 
 // Recording Indicator
-// Click
+// Recording Indicator: click
 record_btn.addEventListener("click", () => {
-    // toggle recoridng indicators style, color and animation
+    // toggle recording indicators style, (color and animation)
     r_indicator.classList.toggle("active-recording");
 
-    // Change button text
+    // Method 1: Ternary
     // record_btn.innerHTML =
     //     record_btn.innerHTML == "Start Recording"
     //         ? "Stop Recording"
     //         : "Start Recording";
 
+    // Method 2: Ternary + Function
     let start_record = () => {
         record_btn.innerHTML = "Stop Recording";
         // Debug
@@ -225,7 +226,7 @@ record_btn.addEventListener("click", () => {
     record_btn.innerHTML === "Start Recording" ? start_record() : stop_record();
 });
 
-// MouseEnter, MouseLeave
+// Recording Indicator: mouseEnter, mouseLeave
 r_indicator.addEventListener("mouseenter", () => {
     record_btn.classList.remove("disappear");
 });
@@ -235,7 +236,7 @@ r_indicator.addEventListener("mouseleave", () => {
 
 // Append to DOM
 // Get Root container
-const root_class = ".big-video";
+const root_class = ".video-stream.html5-main-video";
 const root = document.querySelector(root_class);
 
 // Append Video element to preview window
@@ -245,10 +246,10 @@ webcam_preview.appendChild(web_vid);
 panel.appendChild(play_btn);
 panel.appendChild(download_btn);
 
-// Append recording button to indicator container
+// Append Recording Button to recording indicator container
 r_indicator.appendChild(record_btn);
 
-// Append [ indicator, panel ] to container
+// Append [ Indicator, Control Panel ] to container
 webcam_preview.appendChild(r_indicator);
 webcam_preview.appendChild(panel);
 

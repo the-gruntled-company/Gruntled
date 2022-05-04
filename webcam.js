@@ -5,6 +5,9 @@ let to_inline_style = (style) => {
     for (let [key, entry] of Object.entries(style)) {
         console.log(`${key}: ${entry}`);
         output_str += `${key}:${entry};`;
+
+        // output_str && output_str += "t"
+        // output_str ? output_str += "t" : output_str = "t"
     }
     return output_str;
 };
