@@ -1,5 +1,26 @@
 console.log("webcam Script Loaded");
 
+let to_inline_style = (style) => {
+    let output_str = "";
+    for (let [key, entry] of Object.entries(style)) {
+        console.log(`${key}: ${entry}`);
+        output_str += `${key}:${entry};`;
+    }
+    return output_str;
+};
+
+const recording_indicator = (data) => {
+    style = {
+        color: "red",
+        padding: "1rem 2rem",
+        "border-radius": "15px",
+    };
+
+    return `
+    <div class="recording-indicator" style=${to_inline_style(style)} ></div>
+    `;
+};
+
 let createNewVideoElement = () => {
     const new_vid = document.createElement("video");
 
