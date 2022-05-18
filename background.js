@@ -1,67 +1,30 @@
-//Popup shows on youtube.com/watch
-chrome.runtime.onInstalled.addListener(function() {
-    // Replace all rules ...
-    chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
-        // With a new rule ...
-        chrome.declarativeContent.onPageChanged.addRules([ {
-            // That fires when a page's URL contains 'youtube.com/watch' ...
-            conditions: [
-                new chrome.declarativeContent.PageStateMatcher({
-                    pageUrl: { urlContains: 'youtube.com/watch' },
-                })
-            ],
-            // And shows the extension's page action.
-            actions: [ new chrome.declarativeContent.ShowPageAction() ]
-        }]);
-    });
-});
+console.log("Service Worker Loaded - background.js");
 
-"use strict";
+var video = "";
 
-function setupWebcam() {
-    navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: true
-    }).then(stream => {
-        chrome.storage.local.set({
-            'camAccess': true
-        }, () => {});
-        document.querySelector('button#start').disabled = true;
-        document.querySelector('button#record').disabled = false;
-        window.stream = stream;
-  
-        const gumVideo = document.querySelector('video#gum');
-        gumVideo.srcObject = stream;
-      
-        getSupportedMimeTypes().forEach(mimeType => {
-          const option = document.createElement('option');
-          option.value = mimeType;
-          option.innerText = option.value;
-          codecPreferences.appendChild(option);
-        });
-        codecPreferences.disabled = false;
-    })
-    .catch((e) => {
-        document.querySelector('#status').innerHTML = e.toString();
-        console.error(e);
+let startTab = () => {
+    chrome.tabs.create({
+        url: chrome.runtime.getURL('playback.html'),
+        active: true
     });
 }
 
-function getSupportedMimeTypes() {
-    const possibleTypes = [
-      'video/webm;codecs=vp9,opus',
-      'video/webm;codecs=vp8,opus',
-      'video/webm;codecs=h264,opus',
-      'video/mp4;codecs=h264,aac',
-    ];
-    return possibleTypes.filter(mimeType => {
-      return MediaRecorder.isTypeSupported(mimeType);
-    });
-}
-
-document.addEventListener('DOMContentLoaded', ()=>{
-    setupWebcam();
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    console.log("Background received: " + request.msg);
+    if (request.msg === 'startTab') {
+        startTab();
+        // chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        //     chrome.tabs.sendMessage(tabs[0].id, request, (response) => {
+        //         if (response) {
+        //             console.log("there is a response from playback.js to background.js");
+        //         }
+        //     })
+        // })
+        video = request.data;
+        console.log(video);
+    }
+    else if(request.msg === 'get-user-data') {
+        sendResponse(video);
+    }
+    return true; // Required to keep message port open
 });
-
-//Request webcam access from user upon installation
-//Implement stopWebcam()
