@@ -24,10 +24,7 @@ let create_btn = (btn_text, btn_id) => {
 
 // Youtube Player Controls
 // Youtube Video Container
-const yt_vid = document.getElementsByClassName(
-    "video-stream html5-main-video"
-)[0];
-
+const yt_vid = document.getElementsByClassName("video-stream html5-main-video")[0];
 const yt_play_button = document.getElementsByClassName("ytp-play-button")[0];
 
 // aria-label="Pause (k)" || "Play (k)"
@@ -256,50 +253,87 @@ download_btn.href = "#";
 
 // Attach Event Listeners
 
-const recordedVideo = document.getElementById("recorded");
+const recordedVideo = document.createElement('video');
 
-let playbackVideo = () => {
-    console.log("Playback Video");
-    const mimeType = 'video/mp4';
+// let playbackVideo = () => {
+//     recordedVideo.play();
+// };
 
-    const superBuffer = new Blob(recordedBlobs, { type: mimeType });
-    recordedVideo.src = null;
-    recordedVideo.srcObject = null;
-    recordedVideo.src = window.URL.createObjectURL(superBuffer);
-    recordedVideo.controls = true;
+// Listen for messages from the html.
+// chrome.runtime.onMessage.addListener((msg, sender, response) => {
+//     // First, validate the message's structure.
+//     if ((msg.from === 'tab') && (msg.subject === 'DOMInfo')) {
+//         // const blob = new Blob(recordedBlobs, { type: "video/mp4" });
 
-    recordedVideo.play();
-};
+//         // (async () => {
+//         //     const b64 = await blobToBase64(blob);
+//         //     const jsonString = JSON.stringify({blob: b64});
+//         //     //console.log(jsonString);
+//         // })();
+
+//         var domInfo = {
+//             str: "cat",
+//         };
+//         // Directly respond to the sender (popup), 
+//         // through the specified callback.
+//         response(domInfo);
+//     }
+// })
 
 // Play Button
 play_btn.addEventListener("click", () => {
-    // Restart and pay Youtube Video
-    // restart();
-    pause();
+    // restart and play Youtube Video
 
-    // 1. Send the background a message requesting the user's data
-    chrome.runtime.sendMessage('startTab', (response) => {
-        // 3. Got an asynchronous response with the data from the background
-        console.log('Started tab');
-    });
+    const blob = new Blob(recordedBlobs, { type: "video/mp4" });
+
+    (async () => {
+        const b64 = await blobToBase64(blob);
+        const jsonString = JSON.stringify({blob: b64});
+        //console.log(jsonString);
+        
+        // Inform the background page to start tab.
+        chrome.runtime.sendMessage({msg: "startTab", data: jsonString}, (response) => {
+            if(response){
+                console.log('tab started');
+            }
+        });
+    })();
 
     // Play/Pause Webcam this should play pause the recording
     //play_btn.innerHTML == "Playback" ? web_vid.play() : web_vid.pause();
 
     // Change Button Text
-    // play_btn.innerHTML =
-    //     play_btn.innerHTML == "Playback" ? "Stop Playing" : "Playback";
+    // play_btn.innerHTML == "Playback" ? "Stop Playing" : "Playback";
 });
+
+//Listening to playback.js
+// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+//     if (message === 'get-user-data') {
+//         console.log("cat");
+//     }
+//     //return true; // Required to keep message port open
+// });
+
+
+const blobToBase64 = (blob) => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(blob);
+      reader.onloadend = function () {
+        resolve(reader.result);
+      };
+    });
+};
 
 // Download Button
 download_btn.addEventListener("click", () => {
     console.log("Download video");
-    const blob = new Blob(recordedBlobs, { type: "video/webm" });
+    const blob = new Blob(recordedBlobs, { type: "video/mp4" });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.style.display = "none";
     a.href = url;
-    a.download = "test.webm";
+    a.download = "test.mp4";
     document.body.appendChild(a);
     a.click();
     chrome.alarms.create({ delayInMinutes: 1 });
@@ -426,6 +460,7 @@ r_indicator.addEventListener("mouseleave", () => {
 
 // Append to DOM
 // Get Root container
+
 const root_class = ".html5-video-container";
 const root = document.querySelector(root_class);
 // Note: root should be the main youtube videos container
