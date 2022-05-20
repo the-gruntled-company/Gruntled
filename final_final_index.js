@@ -24,7 +24,9 @@ let create_btn = (btn_text, btn_id) => {
 
 // Youtube Player Controls
 // Youtube Video Container
-const yt_vid = document.getElementsByClassName("video-stream html5-main-video")[0];
+const yt_vid = document.getElementsByClassName(
+    "video-stream html5-main-video"
+)[0];
 const yt_play_button = document.getElementsByClassName("ytp-play-button")[0];
 
 // aria-label="Pause (k)" || "Play (k)"
@@ -47,6 +49,8 @@ let restart = () => {
     console.log("restart Youtube video");
 };
 
+//  350px
+//
 // Webcam Preview CSS
 const style = document.createElement("style");
 style.innerHTML = `
@@ -58,9 +62,12 @@ style.innerHTML = `
 
             .webcam-preview {
                 position: relative;
+                
+                width: fit-content;
+                min-width: 333.33px;
 
-                width: 350px;
-                height: 250px;
+                height: fit-content;
+                min-height: 250px;
 
                 display: flex;
                 flex-direction: column;
@@ -71,8 +78,6 @@ style.innerHTML = `
             }
 
             .webcam-video {
-                position: absolute;
-
                 width: 100%;
                 height: 250px;
 
@@ -80,6 +85,10 @@ style.innerHTML = `
             }
             
             .recording-indicator {
+                position: absolute;
+                top: 8px;
+                left: 16px;
+
                 z-index: 99;
 
                 width: 24px;
@@ -107,17 +116,28 @@ style.innerHTML = `
             }
 
             .webcam-control-panel {
+                    position: absolute;
+                    bottom: 5px;
+
                     z-index: 99;
 
-                    opacity: 0;
-                    width: 100%;
+                    padding: 6px 8px;
+
+                    margin: 0 12px;
+                    
+                    width: calc(100% - 24px);
+                    
                     box-sizing: border-box;
-                    padding: 8px;
+
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
+
+                    opacity: 0;
                     background-color: #adadad82;
+
                     border-radius: 15px;
+
                     transition: opacity 200ms linear;
             }
 
@@ -134,6 +154,7 @@ style.innerHTML = `
                 border: 1px solid #4d4d4d;
                 border-radius: 25px;
                 box-shadow: -1px 2px 0px 0px #4d4d4d;
+
             }
 
             #record-btn:active {
@@ -154,14 +175,20 @@ style.innerHTML = `
                 font-size: 14px;
                 
                 padding: .25rem .75rem;
+
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                
                 color: #4d4d4d;
                 background-color: #cdcdcd;
+                
                 border: 1px solid #4d4d4d;
                 border-radius: 25px;
+                
                 box-shadow: -2px 4px 0px 0px #4d4d4d;
+
+                transform: translate(2px, -2px)
             }
 
             #download-btn:active,
@@ -253,7 +280,7 @@ download_btn.href = "#";
 
 // Attach Event Listeners
 
-const recordedVideo = document.createElement('video');
+const recordedVideo = document.createElement("video");
 
 // let playbackVideo = () => {
 //     recordedVideo.play();
@@ -274,29 +301,39 @@ const recordedVideo = document.createElement('video');
 //         var domInfo = {
 //             str: "cat",
 //         };
-//         // Directly respond to the sender (popup), 
+//         // Directly respond to the sender (popup),
 //         // through the specified callback.
 //         response(domInfo);
 //     }
 // })
 
 // Play Button
-play_btn.addEventListener("click", () => {
+play_btn.addEventListener("dblclick", (event) => {
+    event.stopPropagation();
+});
+
+play_btn.addEventListener("click", (event) => {
     // restart and play Youtube Video
+    console.log(event.target.tagName);
+    event.stopPropagation();
+    // console.log(this.tagName);
 
     const blob = new Blob(recordedBlobs, { type: "video/mp4" });
 
     (async () => {
         const b64 = await blobToBase64(blob);
-        const jsonString = JSON.stringify({blob: b64});
+        const jsonString = JSON.stringify({ blob: b64 });
         //console.log(jsonString);
-        
+
         // Inform the background page to start tab.
-        chrome.runtime.sendMessage({msg: "startTab", data: jsonString}, (response) => {
-            if(response){
-                console.log('tab started');
+        chrome.runtime.sendMessage(
+            { msg: "startTab", data: jsonString },
+            (response) => {
+                if (response) {
+                    console.log("tab started");
+                }
             }
-        });
+        );
     })();
 
     // Play/Pause Webcam this should play pause the recording
@@ -314,20 +351,26 @@ play_btn.addEventListener("click", () => {
 //     //return true; // Required to keep message port open
 // });
 
-
 const blobToBase64 = (blob) => {
     return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(blob);
-      reader.onloadend = function () {
-        resolve(reader.result);
-      };
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = function () {
+            resolve(reader.result);
+        };
     });
 };
 
 // Download Button
-download_btn.addEventListener("click", () => {
+download_btn.addEventListener("dblclick", (event) => {
+    event.stopPropagation();
+});
+
+download_btn.addEventListener("click", (event) => {
     console.log("Download video");
+    event.preventDefault();
+    event.stopPropagation();
+
     const blob = new Blob(recordedBlobs, { type: "video/mp4" });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -358,17 +401,15 @@ let start_record = () => {
     web_vid.classList.remove("disappear");
 
     // Play Youtube Video
-    //restart();
-    //play();
+    // restart();
+    play();
 
     // Update Button Text
-    //record_btn.innerHTML = "Stop Recording";
+    record_btn.innerHTML = "Stop Recording";
 
     start_record_helper();
     // Debug
     console.log("Start Recording");
-
-
 };
 
 let start_record_helper = () => {
@@ -376,7 +417,7 @@ let start_record_helper = () => {
     recordedBlobs = [];
 
     // Set Option
-    const mimeType = 'video/mp4';
+    const mimeType = "video/mp4";
     const options = { mimeType };
 
     // Try to get Media Recorder from Media Stream
@@ -388,7 +429,12 @@ let start_record_helper = () => {
     }
 
     // Show Result
-    console.log("Created MediaRecorder", mediaRecorder, "with options", options);
+    console.log(
+        "Created MediaRecorder",
+        mediaRecorder,
+        "with options",
+        options
+    );
 
     // Set on stop event
     mediaRecorder.onstop = (event) => {
@@ -401,22 +447,22 @@ let start_record_helper = () => {
     mediaRecorder.start();
 
     console.log("MediaRecorder started", mediaRecorder);
-    
+
     // Restart Video
-    restart();
-    //Play Video
-    play();
+    // restart();
+    // //Play Video
+    // play();
 
     // Update Record Button
     record_btn.innerHTML = "Stop Recording";
-}
+};
 
 let handleDataAvailable = (event) => {
     console.log("handleDataAvailable", event);
     if (event.data && event.data.size > 0) {
         recordedBlobs.push(event.data);
     }
-}
+};
 
 let stop_record = () => {
     // Pause Youtube Video
@@ -426,7 +472,7 @@ let stop_record = () => {
     //web_vid.pause();
 
     // Update Button Text
-    //record_btn.innerHTML = "Start Recording";
+    record_btn.innerHTML = "Start Recording";
 
     stop_record_helper();
 
@@ -436,15 +482,20 @@ let stop_record = () => {
 
 let stop_record_helper = () => {
     console.log("Stop recording helper");
-    
-    pause();
-    web_vid.pause();
+
+    // pause();
+    // web_vid.pause();
     mediaRecorder.stop();
     record_btn.innerHTML = "Start Recording";
-}
+};
 
-record_btn.addEventListener("click", () => {
+// Record Button Event Listeners
+record_btn.addEventListener("dblclick", (event) => {
+    event.stopPropagation();
+});
+record_btn.addEventListener("click", (event) => {
     // toggle recording indicators style, (color and animation)
+    event.stopPropagation();
     r_indicator.classList.toggle("active-recording");
 
     record_btn.innerHTML === "Start Recording" ? start_record() : stop_record();
@@ -454,6 +505,7 @@ record_btn.addEventListener("click", () => {
 r_indicator.addEventListener("mouseenter", () => {
     record_btn.classList.remove("disappear");
 });
+
 r_indicator.addEventListener("mouseleave", () => {
     record_btn.classList.add("disappear");
 });
