@@ -401,7 +401,7 @@ let start_record = () => {
     web_vid.classList.remove("disappear");
 
     // Play Youtube Video
-    // restart();
+    restart();
     play();
 
     // Update Button Text
