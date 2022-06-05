@@ -1,5 +1,5 @@
 {
-    "name": "sadddddddge",
+    "name": "meow",
     "version": "0.1",
     "manifest_version": 3,
     "background": {
@@ -20,5 +20,10 @@
     },
     "action": {
         "default_popup": "popup.html"
-    }
+    },
+    "content_security_policy": {
+        "extension_pages": "script-src 'self'; object-src 'self'",
+        "sandbox": "sandbox allow-scripts; script-src 'self' https://www.youtube.com object-src 'self'"
+
+      }
 }

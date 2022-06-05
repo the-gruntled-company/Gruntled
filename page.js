@@ -1,4 +1,4 @@
-console.log("playback.js loaded");
+console.log("page.js loaded");
 
 // Once the DOM is ready...
 window.addEventListener('DOMContentLoaded', () => {
@@ -17,19 +17,24 @@ window.addEventListener('DOMContentLoaded', () => {
     video.autoplay = false;
     video.controls = true;
     video.muted = false;
-    video.height = 240; //in px
-    video.width = 320; //in px
+    video.height = 390; //in px
+    video.width = 640; //in px
 
     (async () => {
       const parsed = JSON.parse(response);
       const blob = await fetch(parsed.blob).then(res => res.blob());
       video.src = URL.createObjectURL(blob);
       video.play();
-      box.appendChild(video);
+      reaction.appendChild(video);
     })();
   });
+
+  chrome.runtime.sendMessage({msg: "get-youtube-data"}, (response) => {
+    const iframe = document.createElement('iframe');
+    
+    iframe.height = 390;
+    iframe.width = 640;
+    iframe.src= "https://www.youtube.com/embed/" + response;
+    youtube.appendChild(iframe);
+  });
 });
-
-
-
-

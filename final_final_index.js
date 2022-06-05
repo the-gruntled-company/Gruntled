@@ -1,11 +1,5 @@
 console.log("Final_Final_Index.js loaded");
 
-// async function getCurrentTab() {
-//     let queryOptions = { active: true, currentWindow: true };
-//     let [tab] = await chrome.tabs.query(queryOptions);
-//     return tab;
-// }
-
 // Functions
 let create_btn = (btn_text, btn_id) => {
     let new_btn = document.createElement("button");
@@ -271,8 +265,6 @@ const play_id = "playback-btn";
 const play_btn = create_btn("Playback", play_id);
 
 // Download Button
-// const download_id = "download-btn";
-// const download_btn = create_btn("Download", download_id);
 const download_btn = document.createElement("a");
 download_btn.innerHTML = "Download";
 download_btn.id = "download-btn";
@@ -281,31 +273,6 @@ download_btn.href = "#";
 // Attach Event Listeners
 
 const recordedVideo = document.createElement("video");
-
-// let playbackVideo = () => {
-//     recordedVideo.play();
-// };
-
-// Listen for messages from the html.
-// chrome.runtime.onMessage.addListener((msg, sender, response) => {
-//     // First, validate the message's structure.
-//     if ((msg.from === 'tab') && (msg.subject === 'DOMInfo')) {
-//         // const blob = new Blob(recordedBlobs, { type: "video/mp4" });
-
-//         // (async () => {
-//         //     const b64 = await blobToBase64(blob);
-//         //     const jsonString = JSON.stringify({blob: b64});
-//         //     //console.log(jsonString);
-//         // })();
-
-//         var domInfo = {
-//             str: "cat",
-//         };
-//         // Directly respond to the sender (popup),
-//         // through the specified callback.
-//         response(domInfo);
-//     }
-// })
 
 // Play Button
 play_btn.addEventListener("dblclick", (event) => {
@@ -318,22 +285,23 @@ play_btn.addEventListener("click", (event) => {
     event.stopPropagation();
     // console.log(this.tagName);
 
-    const blob = new Blob(recordedBlobs, { type: "video/mp4" });
+    //send youtube video id to page.html
+    const id = getVideoID();
+    console.log(id);
 
+    //send reaction video to page.html
+    const blob = new Blob(recordedBlobs, { type: "video/mp4" });
     (async () => {
         const b64 = await blobToBase64(blob);
         const jsonString = JSON.stringify({ blob: b64 });
         //console.log(jsonString);
 
         // Inform the background page to start tab.
-        chrome.runtime.sendMessage(
-            { msg: "startTab", data: jsonString },
-            (response) => {
-                if (response) {
-                    console.log("tab started");
-                }
+        chrome.runtime.sendMessage({ msg:"startTab", data:jsonString, videoID: id}, (response) => {
+            if (response) {
+                console.log("tab started");
             }
-        );
+        });
     })();
 
     // Play/Pause Webcam this should play pause the recording
@@ -343,13 +311,14 @@ play_btn.addEventListener("click", (event) => {
     // play_btn.innerHTML == "Playback" ? "Stop Playing" : "Playback";
 });
 
-//Listening to playback.js
-// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-//     if (message === 'get-user-data') {
-//         console.log("cat");
-//     }
-//     //return true; // Required to keep message port open
-// });
+
+let getVideoID = () => {
+    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+    var url = window.location.href;
+    var match = url.match(regExp);
+    return (match&&match[7].length==11)? match[7] : false;
+}
+
 
 const blobToBase64 = (blob) => {
     return new Promise((resolve) => {

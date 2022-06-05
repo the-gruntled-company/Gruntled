@@ -97,21 +97,21 @@ let startCamera = () => {
 //     console.log("Stop Recording END");
 // };
 
-let playbackVideo = () => {
-    console.log("Playback Video");
-    const mimeType = 'video/mp4';
+// let playbackVideo = () => {
+//     console.log("Playback Video");
+//     const mimeType = 'video/mp4';
 
-    const superBuffer = new Blob(recordedBlobs, { type: mimeType });
-    recordedVideo.src = null;
-    recordedVideo.srcObject = null;
-    recordedVideo.src = window.URL.createObjectURL(superBuffer);
-    recordedVideo.controls = true;
-    navigator.serviceWorker.controller.postMessage({
-        data: "restart video",
-    });
-    //port.postMessage({ data: "restart video" });
-    recordedVideo.play();
-};
+//     const superBuffer = new Blob(recordedBlobs, { type: mimeType });
+//     recordedVideo.src = null;
+//     recordedVideo.srcObject = null;
+//     recordedVideo.src = window.URL.createObjectURL(superBuffer);
+//     recordedVideo.controls = true;
+//     navigator.serviceWorker.controller.postMessage({
+//         data: "restart video",
+//     });
+//     //port.postMessage({ data: "restart video" });
+//     recordedVideo.play();
+// };
 
 // Attach buttons to functions
 // addCustomEventListener(playButton, playbackVideo);
