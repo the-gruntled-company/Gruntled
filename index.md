@@ -1,6 +1,64 @@
 ## Welcome to the Gruntled browser extension
 ### Created by @borntonguyen, @leepriscilla, @rickyg365, and @cvraut
 
+
+Gruntled is a browser extension that allows users to record their reaction to a YouTube video, generate a link so they can send to friends that will consolidate their reactions to the respective video.
+
+
+Here's a link to an [in-progress prototype](https://invis.io/6812JG27S2X3#/465300953_Base)
+& [a video tutorial on how to get it running on your machine](https://streamable.com/1552os)
+
+<h5 align="center">  Prototype Instructions </h5>
+1) Zoom out of prototype (if needed){'CTRL' + '-'} <br>
+2) Click anywhere on the proto to highlight hotzones to progress through the prototype. <br>
+3) Press 'C' to toggle comments at anytime.
+
+
+<h5 align="center">  Hypothesis </h5>
+
+We believe creating a reaction-sharing browser extension for YouTube content consumers will give users more enjoyment & connection.
+We will know this is true when we see an increase of reaction videos created with our extension.
+
+
+<h5 align="center"> How To Get The Extension Running on Chrome </h5>  
+1) Go to github.com/borntonguyen/Gruntled <br>
+2) Click the green drop-down 'Code' near the far-right corner. <br>
+3) Download ZIP. <br>
+4) Go to File Explorer, right click the file, click 'Extract Here' <br>
+5) Go to browser settings (the three vertical dots in the top right corner) <br>
+6) Click 'Settings' <br> 
+7) Click 'Extensions' <br>
+8) Toggle 'Developer Mode' <br>
+9) Click 'Load Unpacked' <br>
+10) Select the extracted folder <br>
+11) Nice, the Extension is now on your machine, you could click on the extensions icon and pin it! 
+
+<br>
+<br>
+License 
+Copyright (c) 2014, The WebRTC project authors. All rights reserved.
+
+
+
+
+
+
+
+
+
+<br>
+<br>
+<br>
+
+
+
+
+
+
+---
+
+ignore this if you are not a Grunt!
+
 You can use the [editor on GitHub](https://github.com/borntonguyen/Gruntled/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
