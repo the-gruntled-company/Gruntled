@@ -1,4 +1,5 @@
-## Welcome to GitHub Pages
+## Welcome to the Gruntled browser extension
+### Created by @borntonguyen, @leepriscilla, @rickyg365, and @cvraut
 
 You can use the [editor on GitHub](https://github.com/borntonguyen/Gruntled/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
 
