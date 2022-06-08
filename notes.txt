@@ -1,0 +1,6 @@
+# notes.txt
+
+To deploy to gcloud locally:
+ - mamba activate gruntled
+ - gcloud init --console-only (should only need to be run the 1st time)
+ - gcloud app deploy
