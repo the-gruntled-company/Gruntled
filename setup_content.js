@@ -1,4 +1,4 @@
-console.log("Final_Final_Index.js loaded");
+console.log("setup_content.js loaded");
 
 // async function getCurrentTab() {
 //     let queryOptions = { active: true, currentWindow: true };
@@ -30,17 +30,17 @@ const yt_vid = document.getElementsByClassName(
 const yt_play_button = document.getElementsByClassName("ytp-play-button")[0];
 
 // aria-label="Pause (k)" || "Play (k)"
-let play = () => {
+let pause = () => {
     if (yt_play_button.title == "Pause (k)") {
         yt_play_button.click();
-        console.log("play Youtube video");
+        console.log("Pause Youtube video");
     }
 };
 
-let pause = () => {
+let play = () => {
     if (yt_play_button.title == "Play (k)") {
         yt_play_button.click();
-        console.log("pause Youtube video");
+        console.log("Play Youtube video");
     }
 };
 
@@ -215,12 +215,12 @@ style.innerHTML = `
 document.head.appendChild(style);
 
 // Create Elements
+
 // Webcam Preview
 const webcam_preview = document.createElement("div");
 webcam_preview.classList.add("webcam-preview");
 
 // Webcam Video
-// Getting Webcam Data
 const web_vid = document.createElement("video");
 web_vid.playsInline = true;
 web_vid.autoplay = true;
@@ -228,6 +228,7 @@ web_vid.muted = true;
 web_vid.classList.add("webcam-video");
 web_vid.classList.add("disappear");
 
+// Getting Webcam Data
 let setupWebcam = () => {
     navigator.mediaDevices
         .getUserMedia({
@@ -253,6 +254,10 @@ let setupWebcam = () => {
         });
 };
 
+// Can Move this call inside of start recording button
+// to avoid setting up webcam until user clicks on it
+setupWebcam();
+
 // Recording Indicator
 const r_indicator = document.createElement("div");
 r_indicator.classList.add("recording-indicator");
@@ -271,14 +276,10 @@ const play_id = "playback-btn";
 const play_btn = create_btn("Playback", play_id);
 
 // Download Button
-// const download_id = "download-btn";
-// const download_btn = create_btn("Download", download_id);
 const download_btn = document.createElement("a");
 download_btn.innerHTML = "Download";
 download_btn.id = "download-btn";
 download_btn.href = "#";
-
-// Attach Event Listeners
 
 const recordedVideo = document.createElement("video");
 
@@ -307,14 +308,19 @@ const recordedVideo = document.createElement("video");
 //     }
 // })
 
+// Attach Event Listeners
+
 // Play Button
 play_btn.addEventListener("dblclick", (event) => {
     event.stopPropagation();
 });
 
 play_btn.addEventListener("click", (event) => {
-    // restart and play Youtube Video
     console.log(event.target.tagName);
+
+    // Pause Youtube Video
+    pause();
+
     event.stopPropagation();
     // console.log(this.tagName);
 
@@ -362,14 +368,13 @@ const blobToBase64 = (blob) => {
 };
 
 // Download Button
-download_btn.addEventListener("dblclick", (event) => {
-    event.stopPropagation();
-});
-
 download_btn.addEventListener("click", (event) => {
     console.log("Download video");
     event.preventDefault();
     event.stopPropagation();
+
+    // Pause Youtube Video
+    pause();
 
     const blob = new Blob(recordedBlobs, { type: "video/mp4" });
     const url = window.URL.createObjectURL(blob);
@@ -386,23 +391,22 @@ download_btn.addEventListener("click", (event) => {
     });
 });
 
-// Recording Indicator
-// Recording Indicator: click
-// Method 1: Ternary
-// record_btn.innerHTML =
-//     record_btn.innerHTML == "Start Recording"
-//         ? "Stop Recording"
-//         : "Start Recording";
+download_btn.addEventListener("dblclick", (event) => {
+    event.stopPropagation();
+});
 
-// Method 2: Ternary + Function
+// Recording Indicator
+
+// Recording Indicator: click
 let start_record = () => {
     // Setup Webcam and make visible
-    setupWebcam(); // can run this when the script is injected to speed up
+    // setupWebcam(); // can run this when the script is injected to speed up
     web_vid.classList.remove("disappear");
 
     // Play Youtube Video
     restart();
-    play();
+
+    play(); // Add some delay, webcam takes a bit to setup or is there a way to check when the stream is playing?
 
     // Update Button Text
     record_btn.innerHTML = "Stop Recording";
@@ -448,11 +452,6 @@ let start_record_helper = () => {
 
     console.log("MediaRecorder started", mediaRecorder);
 
-    // Restart Video
-    // restart();
-    // //Play Video
-    // play();
-
     // Update Record Button
     record_btn.innerHTML = "Stop Recording";
 };
@@ -466,7 +465,7 @@ let handleDataAvailable = (event) => {
 
 let stop_record = () => {
     // Pause Youtube Video
-    //pause();
+    pause();
 
     // Stop Webcam
     //web_vid.pause();
@@ -483,8 +482,6 @@ let stop_record = () => {
 let stop_record_helper = () => {
     console.log("Stop recording helper");
 
-    // pause();
-    // web_vid.pause();
     mediaRecorder.stop();
     record_btn.innerHTML = "Start Recording";
 };
@@ -512,7 +509,6 @@ r_indicator.addEventListener("mouseleave", () => {
 
 // Append to DOM
 // Get Root container
-
 const root_class = ".html5-video-container";
 const root = document.querySelector(root_class);
 // Note: root should be the main youtube videos container

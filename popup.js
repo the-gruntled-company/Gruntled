@@ -31,7 +31,7 @@ let startCamera = () => {
         // Send script to start camera
         chrome.scripting.executeScript({
             target: { tabId: tab.id },
-            files: ["final_final_index.js"],
+            files: ["setup_content.js"],
         });
     });
 };
@@ -73,7 +73,7 @@ let startCamera = () => {
 
 //     console.log("MediaRecorder started", mediaRecorder);
 //     console.log("Play Video");
-    
+
 //     // Restart Video
 //     chrome.scripting.executeScript({
 //         target: { tabId: tab.id },
@@ -99,7 +99,7 @@ let startCamera = () => {
 
 let playbackVideo = () => {
     console.log("Playback Video");
-    const mimeType = 'video/mp4';
+    const mimeType = "video/mp4";
 
     const superBuffer = new Blob(recordedBlobs, { type: mimeType });
     recordedVideo.src = null;
@@ -146,4 +146,3 @@ document.addEventListener("DOMContentLoaded", () => {
     // onStartUp();
     setupTabs();
 });
-
