@@ -11,7 +11,8 @@ Getting started (1st time):
  2. mamba env create -f environment.yml
  3. visit https://console.cloud.google.com/home/dashboard?project=gruntled-reaction-yt-upload
    3a. Login using team credentials
- 4. gcloud init --console-only
+ 4. mamba activate gruntled
+ 5. gcloud init --console-only
 
 To deploy to gcloud locally:
  - mamba activate gruntled
