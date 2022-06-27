@@ -454,6 +454,16 @@ let start_record_helper = () => {
 
     // Update Record Button
     record_btn.innerHTML = "Stop Recording";
+
+    // Pause w/ Youtube Video
+    yt_vid.addEventListener("pause", () => {
+        console.log("pause yt so pause record");
+        mediaRecorder.pause();
+    });
+    yt_vid.addEventListener("play", () => {
+        console.log("play yt so play record");
+        mediaRecorder.resume();
+    });
 };
 
 let handleDataAvailable = (event) => {
