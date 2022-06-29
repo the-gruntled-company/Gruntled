@@ -21,7 +21,7 @@ We will know this is true when we see an increase of reaction videos created wit
 
 
 <h5 align="center"> How To Get The Extension Running on Chrome </h5>  
-1) Go to [the Gruntled download page](github.com/borntonguyen/Gruntled) <br>
+1) Go to [the Gruntled download page](https://github.com/borntonguyen/Gruntled) <br>
 2) Click the green drop-down 'Code' near the far-right corner. <br>
 3) Download ZIP. <br>
 4) Go to File Explorer, right click the file, click 'Extract Here' <br>
