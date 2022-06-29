@@ -1,33 +1,28 @@
-from flask import Flask, redirect, url_for, request
-app = Flask(__name__)
+from flask import Flask, Blueprint, render_template, redirect, url_for, request
+from flask_login import login_required, current_user
 
-@app.route('/admin')
-def hello_admin():
-   return 'Hello Admin'
+main = Blueprint('main', __name__)
 
-@app.route('/guest/<guest>')
-def hello_guest(guest):
-   return 'Hello %s as Guest' % guest
+@main.route('/')
+def index():
+    return render_template('index.html')
 
-@app.route('/user/<name>')
-def hello_user(name):
-   if name =='admin':
-      return redirect(url_for('hello_admin'))
-   else:
-      return redirect(url_for('hello_guest',guest = name))
+@main.route('/profile')
+def profile():
+    return render_template('profile.html')
 
-@app.route('/success/<name>')
-def success(name):
-   return 'welcome %s' % name
+auth = Blueprint('auth', __name__)
 
-@app.route('/login',methods = ['POST', 'GET'])
+@auth.route('/login')
 def login():
-   if request.method == 'POST':
-      user = request.form['nm']
-      return redirect(url_for('success',name = user))
-   else:
-      user = request.args.get('nm')
-      return redirect(url_for('success',name = user))
+    return render_template('login.html')
 
-if __name__ == '__main__':
-   app.run(debug = True)
+@auth.route('/signup')
+def signup():
+    return render_template('signup.html')
+
+@auth.route('/logout')
+def logout():
+    return 'Logout'
+
+
