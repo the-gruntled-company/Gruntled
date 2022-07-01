@@ -3,3 +3,4 @@ db.sqlite
 
 #Ignore cache
 **/__pycache__/**
+__pycache__

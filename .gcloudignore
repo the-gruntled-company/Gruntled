@@ -15,5 +15,8 @@
 
 # Python pycache:
 __pycache__/
+gruntled_backend/__pycache__/
 # Ignored by the build system
 /setup.cfg
+# database
+gruntled_backend/db.sqlite
