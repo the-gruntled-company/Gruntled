@@ -1,0 +1,5 @@
+#Ignore user database
+db.sqlite
+
+#Ignore cache
+**/__pycache__/**
