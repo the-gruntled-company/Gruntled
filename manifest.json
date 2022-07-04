@@ -1,5 +1,5 @@
 {
-    "name": "sadddddddge",
+    "name": "Gruntled",
     "version": "0.1",
     "manifest_version": 3,
     "background": {
@@ -13,11 +13,6 @@
         "storage",
         "identity"
     ],
-    "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAivRrPZOEMBz1gZ8FL7O8cNwLG2COhhcy9vIH51NeP2+MCgI5GIwJ4YpPeqbDDrmErLcOAoAzNzL8yVHbuhB4IwQOBEbcKvmgU4JuPFT7eS/nDumE1Pomkofaf108za/bN1d/R2Qa6tZWZvFzNpoXRyRs9sHPJt4K3HYe+0KSbJfxbjDsdcfEF4niVum8Ie2FYqlkXOJD8iImVKT4V6GA5YQ2YWgxsnHFpmeKCo6UGT82EmxpVFl8eI0cetaYusaOa0ZQgvM++npZl4883q8N+AGmyxiOWeuqDuKGvwn9aw5nogLjRr39qlMalbgp8FHMG7ZjGGtLGksTkWhQ4tfkfwIDAQAB",
-    "oauth2": {
-        "client_id": "295176405563-ocagkit3bm8dkf23jpbkcvnn9c9sl9iq.apps.googleusercontent.com",
-        "scopes":["https://www.googleapis.com/auth/drive"]
-    },
     "action": {
         "default_popup": "popup.html"
     }
