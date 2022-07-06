@@ -1,5 +1,6 @@
 #Ignore user database
 db.sqlite
-
+gruntled_backend/db.sqlite
 #Ignore cache
 __pycache__/
+gruntled_backend/__pycache__/
