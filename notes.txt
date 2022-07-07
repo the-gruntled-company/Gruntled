@@ -6,14 +6,8 @@ Notify @cvraut if there are any issues
 How to publish the server to the cloud
 ======================================
 
-Getting started (1st time):
- 1. have mamba or conda installed (I assume mamba)
- 2. mamba env create -f environment.yml
- 3. visit https://console.cloud.google.com/home/dashboard?project=gruntled-reaction-yt-upload
-   3a. Login using team credentials
- 4. mamba activate gruntled
- 5. gcloud init --console-only
+just push to the right branch:
+ - backend-dev (development)
+ - backend (production)
 
-To deploy to gcloud locally:
- - mamba activate gruntled
- - gcloud app deploy
+ don't break shit 🏏
