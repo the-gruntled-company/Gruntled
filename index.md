@@ -56,7 +56,7 @@ Copyright (c) 2014, The WebRTC project authors. All rights reserved.
 
 ---
 
-google-site-verification: googleda2a2fb8b419a8b4.html
+<meta name="google-site-verification" content="gk2Thwy0rBz1Kln223kRgEuh45I-eG7xxlf5OFOI5lg" />
 
 ignore this if you are not a Grunt!
 
