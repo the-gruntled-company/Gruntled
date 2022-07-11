@@ -1,4 +1,5 @@
-## Welcome to the Gruntled browser extension
+## Welcome to The Gruntled Company
+## The Gruntled browser extension
 ### Created by @borntonguyen, @leepriscilla, @rickyg365, and @cvraut
 
 
