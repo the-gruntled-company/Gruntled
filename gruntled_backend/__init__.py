@@ -15,9 +15,7 @@ def create_app():
 
     app.config['SECRET_KEY'] = '9OLWxND4o83j4K4iuopO'
 
-    # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://ikxphdxdmysghq:8cef93eacb6830b8095c8e5d1b33ecacfaba8231ea400e0c62ca2ea1df5b1a7d@ec2-3-223-169-166.compute-1.amazonaws.com:5432/de9h18disn317r'
-
-    uri = os.getenv("DATABASE_URL")
+    uri = os.getenv("DATABASE_URL_DEV") #uri = os.getenv("DATABASE_URL")
     uri = uri.replace("postgres://", "postgresql://", 1)
     app.config['SQLALCHEMY_DATABASE_URI'] = uri
 
