@@ -7,7 +7,7 @@
     },
     "permissions": [
         "scripting",
-        "declarativeContent",
+        "activeTab",
         "tabs",
         "storage",
         "identity"
