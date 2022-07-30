@@ -3,4 +3,4 @@ vids
 youtube_uploader_selenium
 
 client_secrets.json
-*.yml
+settings.yml

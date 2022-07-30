@@ -9,6 +9,7 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from googleapiclient.http import MediaFileUpload
+from datetime import datetime
 
 SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly',
           'https://www.googleapis.com/auth/drive.file']
@@ -44,7 +45,7 @@ def upload_files(fname = "test.txt",upload_folder="1QiVjETYMJNp3i-yENfwR_rUwK_GQ
     service = get_gdrive_service()
     # folder details we want to make
     folder_metadata = {
-        "name": "TestFolder",
+        "name": str(datetime.now())[:-7],
         "mimeType": "application/vnd.google-apps.folder",
         "parents": [upload_folder]
     }
