@@ -11,10 +11,13 @@ from google.auth.transport.requests import Request
 from googleapiclient.http import MediaFileUpload
 from datetime import datetime
 
-SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly',
-          'https://www.googleapis.com/auth/drive.file']
+# TODO: figure out where the list of scopes can be found & comment the link here
+# SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly', 'https://www.googleapis.com/auth/drive.file']
 
-SCOPES = 'https://www.googleapis.com/auth/drive'
+# NOTE: SCOPES can be a single string for the first token request
+# BUT the refresh function requires it to be a list object ... thanks google docs 
+# (https://stackoverflow.com/questions/60329078/gmail-api-google-auth-exceptions-refresherror-invalid-scope)
+SCOPES = ['https://www.googleapis.com/auth/drive']
 
 def get_gdrive_service():
     creds = None
