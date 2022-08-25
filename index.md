@@ -23,15 +23,10 @@ We will know this is true when we see an increase of reaction videos created wit
 
 <h5 align="center"> How To Get The Extension Running on Chrome </h5>  
 
-1) Download [ZIP](https://github.com/borntonguyen/Gruntled/archive/refs/heads/main.zip). <br>
-2) Go to File Explorer, right click the file, click 'Extract Here' or to the pathway of your choice. <br>
-3) Go to browser settings (the three vertical dots in the top right corner). <br>
-4) Click 'Settings'. <br> 
-5) Click 'Extensions'. <br>
-6) Toggle 'Developer Mode'. <br>
-7) Click 'Load Unpacked'. <br>
-8) Load the extracted folder. <br>
-9) Nice, the Extension is now on your machine, you can click on the extensions icon to pin it near your URL bar! 
+1) Navigate to the [Chrome Web Store](https://chrome.google.com/webstore/detail/gruntled/dkhcgpdaldldgnjmenbiclfjlgaikdbh/related). <br>
+2) Click 'Add to Chrome'. <br>
+3) When prompted, click 'Add extension'. <br>
+
 
 <br>
 <br>
